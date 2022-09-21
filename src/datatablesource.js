@@ -1,14 +1,15 @@
+
 export const userColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "uid", headerName: "ID", width: 70 },
   {
-    field: "user",
+    field: "name",
     headerName: "User",
     width: 230,
     renderCell: (params) => {
       return (
         <div className="cellWithImg">
           <img className="cellImg" src={params.row.img} alt="avatar" />
-          {params.row.username}
+          {params.row.name}
         </div>
       );
     },
@@ -18,10 +19,15 @@ export const userColumns = [
     headerName: "Email",
     width: 230,
   },
+  {
+    field: "date_created",
+    headerName: "Date Created",
+    width: 230,
+  },
 
   {
-    field: "age",
-    headerName: "Age",
+    field: "phone",
+    headerName: "Phone",
     width: 100,
   },
   {
@@ -38,8 +44,10 @@ export const userColumns = [
   },
 ];
 
+
+
 //temporary data
-export const userRows = [
+export var userRows = [
   {
     id: 1,
     username: "Snow",
@@ -110,14 +118,6 @@ export const userRows = [
     img: "https://images.pexels.com/photos/1820770/pexels-photo-1820770.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
     email: "snow@gmail.com",
     status: "pending",
-    age: 65,
-  },
-  {
-    id: 10,
-    username: "Roxie",
-    img: "https://images.pexels.com/photos/1820770/pexels-photo-1820770.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-    email: "snow@gmail.com",
-    status: "active",
     age: 65,
   },
 ];

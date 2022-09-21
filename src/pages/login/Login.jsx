@@ -30,7 +30,7 @@ const Login = () => {
   return (
     <div className="login">
       <form onSubmit={handleLogin}>
-        <h1 className="ehatid-title">Ehatid Admin</h1>
+        <h1 className="ehatid-title">ehatid</h1>
         <input type="email" placeholder="Email" onChange={e=>setEmail(e.target.value)} />
         <input type="password" placeholder="Password" onChange={e=>setPassword(e.target.value)} /> <br />
         <button type="submit">Login</button>
