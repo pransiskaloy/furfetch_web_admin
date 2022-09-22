@@ -6,16 +6,19 @@
     justify-content: center;
     background-image: url("../../assets/images/login.jpg");
     background-size: cover;
+    h1{
+        font-size: 55px;
+    }
     form{
         height: 50%;
-        width: 25%;
-        padding: 50px 20px 35px 20px;
+        width: 30%;
+        padding: 50px 10px 40px 10px;
         background-color: rgba(80, 80, 80, 0.3);
         border-radius: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: inset 0px 0px 27px 0px rgba(0,0,0,0.1),0px 0px 34px 4px rgba(0,0,0,0.1);
+        box-shadow: inset 0px 0px 27px 0px rgba(47, 47, 47, 0.1),0px 0px 34px 4px rgba(0,0,0,0.1);
 
         .ehatid-title{
             font-family: 'Baloo Bhai 2', cursive;
@@ -29,9 +32,9 @@
             color: white;
             background-color: rgba(0,0,0,0);
             padding: 5px;
-            width: 200px;
+            width: 65%;
             height: 30px;
-            margin: 10px;
+            margin: 20px;
         }
         input:focus{
             border-color: white;
@@ -43,8 +46,9 @@
             color: white;
         }
         button{
+            border-radius: 10px;
             width: 200px;
-            height: 30px;
+            height: 40px;
             border:none;
             background-color: dodgerblue;
             color: white;

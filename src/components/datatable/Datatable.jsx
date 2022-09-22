@@ -1,15 +1,40 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
+import { userColumns,userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import {ref, onValue} from 'firebase/database'
+import {db} from "../../services/firebase.js"
 
 const Datatable = () => {
-  const [data, setData] = useState(userRows);
+  
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
+
+  var userRowsDB =[];
+  var userRow =[];
+  const userRef = ref(db,'users');
+  onValue(userRef, (snapshot) =>{
+    userRowsDB = snapshot.val();
+
+    //to get specific row of data
+    // snapshot.forEach((childSnapshot) => {
+    //   const childKey = childSnapshot.key;
+    //   userRowsDB = childSnapshot.val();  
+    // });
+  }
+  );
+  Object.entries(userRowsDB).forEach(([key,val])=>{
+    userRow.push(val);
+  })
+  
+  console.log(userRow);
+  console.log(userRows);
+
+  const [data, setData] = useState(userRow);
+  // const [data, setData] = useState(userRowsDB);
 
   const actionColumn = [
     {
@@ -45,9 +70,11 @@ const Datatable = () => {
         className="datagrid"
         rows={data}
         columns={userColumns.concat(actionColumn)}
+        getRowId = {(row) => row.uid}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
+        disableSelectionOnClick
       />
     </div>
   );
