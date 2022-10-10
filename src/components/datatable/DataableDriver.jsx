@@ -2,12 +2,11 @@ import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns} from "../../datatablesource";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {ref, onValue} from 'firebase/database'
 import {db,} from "../../services/firebase.js"
-import { useEffect } from "react";
 
-const Datatable = () => {
+const DatatableDriver = () => {
   
   const [data, setData] = useState([]);
 
@@ -16,7 +15,7 @@ const Datatable = () => {
   // };
 
   useEffect(() => {
-    const userRef = ref(db,'users');
+    const userRef = ref(db,'drivers');
     onValue(userRef, (snapshot) =>{
       setData([]);
       const dataCheck = snapshot.val();
@@ -44,7 +43,7 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" state={{ uid :params.row.uid }} style={{ textDecoration: "none" }}>
+            <Link to="/users/test" style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             {/* <div
@@ -80,4 +79,4 @@ const Datatable = () => {
   );
 };
 
-export default Datatable;
+export default DatatableDriver;
