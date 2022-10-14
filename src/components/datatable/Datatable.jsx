@@ -11,9 +11,6 @@ const Datatable = () => {
   
   const [data, setData] = useState([]);
 
-  // const handleDelete = (id) => {
-  //   setData(data.filter((item) => item.id !== id));
-  // };
 
   useEffect(() => {
     const userRef = ref(db,'users');
@@ -44,15 +41,9 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" state={{ uid :params.row.uid }} style={{ textDecoration: "none" }}>
+            <Link to="/users/profile" state={{ uid :params.row.uid }} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
-            {/* <div
-              className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div> */}
           </div>
         );
       },
@@ -61,10 +52,10 @@ const Datatable = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
-        <Link to="/users/new" className="link">
+        Users List
+        {/* <Link to="/users/new" className="link">
           Add New
-        </Link>
+        </Link> */}
       </div>
       <DataGrid
         className="datagrid"

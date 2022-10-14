@@ -1,6 +1,6 @@
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns} from "../../datatablesource";
+import { driverColumns} from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useState,useEffect } from "react";
 import {ref, onValue} from 'firebase/database'
@@ -43,7 +43,7 @@ const DatatableDriver = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
+            <Link to="/drivers/profile" state={{ uid :params.row.id }} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             {/* <div
@@ -60,16 +60,16 @@ const DatatableDriver = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
-        <Link to="/users/new" className="link">
+        Drivers List
+        {/* <Link to="/users/new" className="link">
           Add New
-        </Link>
+        </Link> */}
       </div>
       <DataGrid
         className="datagrid"
         rows={data}
-        columns={userColumns.concat(actionColumn)}
-        getRowId = {(row) => row.uid}
+        columns={driverColumns.concat(actionColumn)}
+        getRowId = {(row) => row.id}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

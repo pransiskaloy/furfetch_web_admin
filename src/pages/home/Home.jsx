@@ -14,9 +14,9 @@ const Home = () => {
         <Navbar />
         <div className="widgets">
           <Widget type="user" />
-          <Widget type="order" />
+          <Widget type="driver" />
           <Widget type="earning" />
-          <Widget type="balance" />
+          <Widget type="trip" />
         </div>
         <div className="charts">
           <Featured />

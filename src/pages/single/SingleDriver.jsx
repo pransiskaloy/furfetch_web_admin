@@ -3,24 +3,24 @@ import { useEffect,useState } from "react";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import Chart from "../../components/chart/Chart";
-import { userTripHeader} from "../../datatablesource";
+import { driverTripHeader } from "../../datatablesource";
 import { DataGrid } from "@mui/x-data-grid";
 import { useLocation } from 'react-router-dom'
 import {ref, onValue} from 'firebase/database'
 import {db,} from "../../services/firebase.js"
 import { Link } from "react-router-dom";
 
-const Single = () => {
+const SingleDriver = () => {
   const location = useLocation()
   const { uid } = location.state
   const [tripData, setTripData] = useState([]);
   const [info, setInfo] = useState([]);
-
+ 
   useEffect(() => {
-    const userRef = ref(db,'users/'+uid);
+    const driverRef = ref(db,'drivers/'+uid);
     const userTripRef = ref(db,'All Ride Request');
     
-    onValue(userRef, (snapshot) =>{
+    onValue(driverRef, (snapshot) =>{
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
         setInfo(dataCheck);
@@ -35,14 +35,14 @@ const Single = () => {
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
         Object.values(dataCheck).map((dat) => {
-          if(uid === dat.userId && dat.status === "ended")
+          if(uid === dat.driverId && dat.status === "ended")
             setTripData((oldArray) =>[...oldArray,dat])
         });
       }
     }
     );
-  },[])
-  
+  })
+  console.log(info)
   const actionColumn = [
     {
       field: "action",
@@ -51,7 +51,7 @@ const Single = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/trip/" state={{ uid :params.row.uid }} style={{ textDecoration: "none" }}>
+            <Link to="/drivers/trip/" state={{ uid :params.row.id }} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
           </div>
@@ -84,6 +84,21 @@ const Single = () => {
                   <span className="itemKey">Phone:</span>
                   <span className="itemValue">{info.phone}</span>
                 </div>
+                <div className="detailItem">
+                    <h3 className="itemTitle">Car Details</h3>
+                  <span className="itemKey">Colo:</span>
+                  <span className="itemValue"> {info.car_details.car_color}</span>
+                  <span className="itemKey">Model:</span>
+                  <span className="itemValue"> {info.car_details.car_model} - {info.car_details.car_number}</span>
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">Type:</span>
+                  <span className="itemValue"> {info.car_details.car_type}</span>
+                </div>
+                <div className="detailItem">
+                <span className="itemKey">Model:</span>
+                  <span className="itemValue"> {info.car_details.car_model} - {info.car_details.car_number}</span>
+                </div>
                 {/* <div className="detailItem">
                   <span className="itemKey">Address:</span>
                   <span className="itemValue">
@@ -111,7 +126,7 @@ const Single = () => {
               <DataGrid
                 className="datagrid"
                 rows={tripData}
-                columns={userTripHeader.concat(actionColumn)}
+                columns={driverTripHeader.concat(actionColumn)}
                 getRowId = {(row) => row.time}
                 pageSize={9}
                 rowsPerPageOptions={[9]}
@@ -126,4 +141,4 @@ const Single = () => {
   );
 };
 
-export default Single;
+export default SingleDriver;

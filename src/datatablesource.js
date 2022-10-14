@@ -1,14 +1,17 @@
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 
 export const userColumns = [
-  { field: "uid", headerName: "ID", width: 70 },
+  { field: "uid", headerName: "ID", width: 280 },
   {
     field: "name",
     headerName: "User",
-    width: 230,
+    width: 200,
     renderCell: (params) => {
       return (
         <div className="cellWithImg">
-          <img className="cellImg" src={params.row.img} alt="avatar" />
+          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.name.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
           {params.row.name}
         </div>
       );
@@ -17,23 +20,68 @@ export const userColumns = [
   {
     field: "email",
     headerName: "Email",
-    width: 230,
+    width: 200,
   },
   {
     field: "date_created",
     headerName: "Date Created",
-    width: 230,
+    width: 220,
   },
 
   {
     field: "phone",
     headerName: "Phone",
-    width: 100,
+    width: 110,
   },
   {
     field: "status",
     headerName: "Status",
-    width: 160,
+    width: 80,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.status}`}>
+          {params.row.status}
+        </div>
+      );
+    },
+  },
+];
+export const driverColumns = [
+  { field: "id", headerName: "ID", width: 280 },
+  {
+    field: "name",
+    headerName: "User",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.name.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
+          {params.row.name}
+        </div>
+      );
+    },
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    width: 200,
+  },
+  {
+    field: "date_created",
+    headerName: "Date Created",
+    width: 220,
+  },
+
+  {
+    field: "phone",
+    headerName: "Phone",
+    width: 110,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 80,
     renderCell: (params) => {
       return (
         <div className={`cellWithStatus ${params.row.status}`}>
@@ -44,6 +92,84 @@ export const userColumns = [
   },
 ];
 
+export const userTripHeader = [
+  { field: "time", headerName: "Date", width: 70 },
+  {
+    field: "driverName",
+    headerName: "Driver",
+    width: 170,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.driverName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
+          {params.row.driverName}
+        </div>
+      );
+    },
+  },
+  {
+    field: "originAddress",
+    headerName: "From",
+    width: 230,
+  },
+  {
+    field: "destinationAddress",
+    headerName: "To",
+    width: 230,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.status}`}>
+          {params.row.status}
+        </div>
+      );
+    },
+  },
+];
+export const driverTripHeader = [
+  { field: "time", headerName: "Date", width: 70 },
+  {
+    field: "driverName",
+    headerName: "Driver",
+    width: 170,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.driverName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
+          {params.row.driverName}
+        </div>
+      );
+    },
+  },
+  {
+    field: "originAddress",
+    headerName: "From",
+    width: 230,
+  },
+  {
+    field: "destinationAddress",
+    headerName: "To",
+    width: 230,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.status}`}>
+          {params.row.status}
+        </div>
+      );
+    },
+  },
+];
 
 
 //temporary data
@@ -121,3 +247,4 @@ export var userRows = [
     age: 65,
   },
 ];
+

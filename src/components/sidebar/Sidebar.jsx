@@ -11,6 +11,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
@@ -46,6 +47,12 @@ const Sidebar = () => {
             <li>
               <PersonOutlineIcon className="icon" />
               <span>Users</span>
+            </li>
+          </Link>
+          <Link to="/drivers" style={{ textDecoration: "none" }}>
+            <li>
+              <DriveEtaIcon className="icon" />
+              <span>Drivers</span>
             </li>
           </Link>
           <Link to="/products" style={{ textDecoration: "none" }}>

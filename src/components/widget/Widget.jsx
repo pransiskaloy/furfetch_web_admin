@@ -2,14 +2,73 @@ import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import DriveEtaIcon from "@mui/icons-material/DriveEta";
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { useState,useEffect } from "react";
+import {ref, onValue} from 'firebase/database'
+import {db,} from "../../services/firebase.js"
+import { Link } from "react-router-dom";
 
 const Widget = ({ type }) => {
   let data;
 
+  const [countUser, setCountUser] = useState(0);
+  const [countDriver, setCountDriver] = useState(0);
+  const [countTrip, setCountTrip] = useState(0);
+  const [totalEarnings, setTotalEarnings] = useState(0.0);
+
+  // const handleDelete = (id) => {
+  //   setData(data.filter((item) => item.id !== id));
+  // };
+
+  useEffect(() => {
+    const userRef = ref(db,'users');
+    const driverRef = ref(db,'drivers');
+    const tripRef = ref(db,'All Ride Request');
+
+    onValue(userRef, (snapshot) =>{
+      setCountUser(0);
+      let counter = 0;
+      const dataCheck = snapshot.val();
+      if(dataCheck !== null){
+        Object.values(dataCheck).map((dat) => {
+          counter++;
+        });
+      }
+      setCountUser(counter);
+    }
+    );
+    onValue(driverRef, (snapshot) =>{
+      setCountDriver(0);
+      let counter = 0;
+      const dataCheck = snapshot.val();
+      if(dataCheck !== null){
+        Object.values(dataCheck).map((dat) => {
+          counter++;
+        });
+      }
+      setCountDriver(counter);
+    }
+    );
+    onValue(tripRef, (snapshot) =>{
+      let total = 0.0;
+      let count = 0;
+      const dataCheck = snapshot.val();
+      if(dataCheck !== null){
+        Object.values(dataCheck).map((dat) => {
+          if(dat.status === "ended")
+            total = total + dat.end_trip.fare_amount
+            count++;
+        });
+        setTotalEarnings(total);
+        setCountTrip(count);
+      }
+    }
+    );
+  },[])
+
   //temporary
-  const amount = 100;
   const diff = 20;
 
   switch (type) {
@@ -17,7 +76,12 @@ const Widget = ({ type }) => {
       data = {
         title: "USERS",
         isMoney: false,
-        link: "See all users",
+        link: <>
+        <Link to="/users" style={{ textDecoration: "none" }}>
+            View all users
+        </Link>
+        </>,
+        amount:countUser,
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -29,13 +93,17 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "order":
+    case "driver":
       data = {
-        title: "ORDERS",
+        title: "DRIVERS",
         isMoney: false,
-        link: "View all orders",
+        amount:countDriver,
+        link: <><Link to="/drivers" style={{ textDecoration: "none" }}>
+        View all drivers
+    </Link>
+    </>,
         icon: (
-          <ShoppingCartOutlinedIcon
+          <DriveEtaIcon
             className="icon"
             style={{
               backgroundColor: "rgba(218, 165, 32, 0.2)",
@@ -49,7 +117,8 @@ const Widget = ({ type }) => {
       data = {
         title: "EARNINGS",
         isMoney: true,
-        link: "View net earnings",
+      amount:parseFloat(totalEarnings.toFixed(2)),
+        link: "View earnings",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -58,13 +127,14 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "balance":
+    case "trip":
       data = {
-        title: "BALANCE",
-        isMoney: true,
+        title: "TRIPS",
+        isMoney: false,
         link: "See details",
+        amount:countTrip,
         icon: (
-          <AccountBalanceWalletOutlinedIcon
+          <CardTravelIcon
             className="icon"
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
@@ -83,8 +153,9 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.isMoney && "$"} {data.amount}
         </span>
+        
         <span className="link">{data.link}</span>
       </div>
       <div className="right">

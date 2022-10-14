@@ -1,7 +1,9 @@
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import ListDriver from "./pages/list/ListDriver";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
+import SingleDriver from "./pages/single/SingleDriver";
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { productInputs, userInputs } from "./formSource";
@@ -32,6 +34,22 @@ function App() {
                 <Route
                   path="new"
                   element={<New inputs={userInputs} title="Add New User" />}
+                />
+                <Route
+                  path="trip"
+                  element={<New inputs={userInputs} title="Trip Information" />}
+                />
+              </Route>
+              <Route path="/drivers">
+                <Route index element={<ListDriver />} />
+                <Route path=":driverId" element={<SingleDriver />} />
+                <Route
+                  path="new"
+                  element={<New inputs={userInputs} title="Add New User" />}
+                />
+                <Route
+                  path="trip"
+                  element={<New inputs={userInputs} title="Trip Information" />}
                 />
               </Route>
               <Route path="/">
