@@ -3,7 +3,14 @@
   width: 100%;
   .singleContainer {
     flex: 6;
-
+    .backButton{
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+    .breadcrumbs{
+      padding-top: 20px;
+      padding-left: 30px;
+    }
     .top {
       padding: 20px;
       display: flex;

@@ -1,41 +1,47 @@
 import "./single.scss";
+import { Link } from "react-router-dom";
+import Button from '@mui/material/Button';
 import { useEffect,useState } from "react";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
-import Chart from "../../components/chart/Chart";
-import { userTripHeader} from "../../datatablesource";
 import { DataGrid } from "@mui/x-data-grid";
 import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import {ref, onValue} from 'firebase/database'
 import {db,} from "../../services/firebase.js"
-import { Link } from "react-router-dom";
+import Chart from "../../components/chart/Chart";
+import Navbar from "../../components/navbar/Navbar";
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import { userTripHeader} from "../../datatablesource";
+import Sidebar from "../../components/sidebar/Sidebar";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const Single = () => {
+  const navigate = useNavigate();
   const location = useLocation()
-  const { uid } = location.state
+  const { userData } = location.state
   const [tripData, setTripData] = useState([]);
   const [info, setInfo] = useState([]);
-
   useEffect(() => {
-    const userRef = ref(db,'users/'+uid);
+    const userRef = ref(db,'users/'+userData.uid);
     const userTripRef = ref(db,'All Ride Request');
     
-    onValue(userRef, (snapshot) =>{
-      const dataCheck = snapshot.val();
-      if(dataCheck !== null){
-        setInfo(dataCheck);
-        // Object.values(dataCheck).map((dat) => {
-        //   setData((oldArray) =>[...oldArray,dat])
-        // });
-      }
-    }
-    );
+    // onValue(userRef, (snapshot) =>{
+    //   setInfo([]);
+    //   const dataCheck = snapshot.val();
+    //   if(dataCheck !== null){
+    //     setInfo(dataCheck);
+    //     // Object.values(dataCheck).map((dat) => {
+    //     //   setData((oldArray) =>[...oldArray,dat])
+    //     // });
+    //   }
+    // }
+    // );
+
     onValue(userTripRef, (snapshot) =>{
       setTripData([]);
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
         Object.values(dataCheck).map((dat) => {
-          if(uid === dat.userId && dat.status === "ended")
+          if(userData.uid === dat.userId && dat.status === "ended")
             setTripData((oldArray) =>[...oldArray,dat])
         });
       }
@@ -64,6 +70,18 @@ const Single = () => {
       <Sidebar />
       <div className="singleContainer">
         <Navbar />
+        <Button variant="text" onClick={() => navigate(-1)} className="backButton"><ArrowBackIosIcon/> Back</Button>
+        <div className="breadcrumbs">
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link to="/users">
+              Users
+            </Link>
+            /
+            <span>
+              Profile
+            </span>
+          </Breadcrumbs>
+        </div>
         <div className="top">
           <div className="left">
             {/* <div className="editButton">Edit</div> */}
@@ -75,14 +93,14 @@ const Single = () => {
                 className="itemImg"
               />
               <div className="details">
-                <h1 className="itemTitle">{info.name}</h1>
+                <h1 className="itemTitle">{userData.name}</h1>
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
-                  <span className="itemValue">{info.email}</span>
+                  <span className="itemValue">{userData.email}</span>
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">Phone:</span>
-                  <span className="itemValue">{info.phone}</span>
+                  <span className="itemValue">{userData.phone}</span>
                 </div>
                 {/* <div className="detailItem">
                   <span className="itemKey">Address:</span>
@@ -103,7 +121,7 @@ const Single = () => {
         </div>
         <div className="bottom">
           <div className="left">
-            <h1 className="title">Last Transactions</h1>
+            <h1 className="title">Trip History</h1>
               {/* <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" /> */}
           </div>
           <div className="right">

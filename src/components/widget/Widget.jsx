@@ -1,7 +1,6 @@
 import "./widget.scss";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import DriveEtaIcon from "@mui/icons-material/DriveEta";
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
