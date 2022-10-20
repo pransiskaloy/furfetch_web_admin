@@ -56,9 +56,9 @@ const Widget = ({ type }) => {
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
         Object.values(dataCheck).map((dat) => {
+          count++;
           if(dat.status === "ended")
             total = total + dat.end_trip.fare_amount
-            count++;
         });
         setTotalEarnings(total);
         setCountTrip(count);
@@ -152,7 +152,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {data.amount}
+          {data.isMoney && "P"} {data.amount}
         </span>
         
         <span className="link">{data.link}</span>

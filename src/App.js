@@ -52,7 +52,7 @@ function App() {
                   element={<New inputs={userInputs} title="Trip Information" />}
                 />
               </Route>
-              <Route path="/">
+              <Route path="/trips">
                 <Route index element={<List />} />
                 <Route path=":productId" element={<Single />} />
                 <Route
