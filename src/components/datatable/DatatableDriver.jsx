@@ -42,7 +42,7 @@ const DatatableDriver = () => {
   },[])
 
 
-  console.log(data)
+  
   //temporary percentage
   const diff = 20;
   const widgetData = {

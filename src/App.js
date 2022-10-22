@@ -1,8 +1,10 @@
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import ListDriver from "./pages/list/ListDriver";
+import ListTrip from "./pages/list/ListTrip";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
+import SingleTrip from "./pages/single/SingleTrip";
 import SingleDriver from "./pages/single/SingleDriver";
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -53,11 +55,12 @@ function App() {
                 />
               </Route>
               <Route path="/trips">
-                <Route index element={<List />} />
+                <Route index element={<ListTrip />} />
                 <Route path=":productId" element={<Single />} />
                 <Route
-                  path="new"
-                  element={<New inputs={productInputs} title="Add New Product" />}
+                  path="trip-details"
+                  element={<SingleTrip title="Add New Product" />}
+                  // element={<New inputs={productInputs} title="Add New Product" />}
                 />
               </Route>
             </> :

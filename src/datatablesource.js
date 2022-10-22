@@ -134,6 +134,45 @@ export const userTripHeader = [
 export const driverTripHeader = [
   { field: "time", headerName: "Date", width: 70 },
   {
+    field: "userName",
+    headerName: "User",
+    width: 170,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.userName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
+          {params.row.userName}
+        </div>
+      );
+    },
+  },
+  {
+    field: "originAddress",
+    headerName: "From",
+    width: 230,
+  },
+  {
+    field: "destinationAddress",
+    headerName: "To",
+    width: 230,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.status}`}>
+          {params.row.status}
+        </div>
+      );
+    },
+  },
+];
+export const tripHeader = [
+  { field: "time", headerName: "Date", width: 70 },
+  {
     field: "driverName",
     headerName: "Driver",
     width: 170,
@@ -143,6 +182,20 @@ export const driverTripHeader = [
           <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.driverName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
           {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
           {params.row.driverName}
+        </div>
+      );
+    },
+  },
+  {
+    field: "userName",
+    headerName: "User",
+    width: 170,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.userName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
+          {params.row.userName}
         </div>
       );
     },

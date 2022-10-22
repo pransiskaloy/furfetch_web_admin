@@ -14,7 +14,7 @@ import { driverTripHeader } from "../../datatablesource";
 import {ref, onValue, getDatabase,get,child} from 'firebase/database'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-const SingleDriver = () => {
+const SingleTrip = () => {
   const navigate = useNavigate();
   const location = useLocation()
   const { driverData } = location.state
@@ -32,14 +32,6 @@ const SingleDriver = () => {
     }).catch((error) => {
       console.error(error);
     });
-
-  
-    // const updateTrip = (dataCheck2) => {
-    //     Object.values(dataCheck2).map((dat) => {
-    //       if(driverData.id === dat.driverId && dat.status === "ended")
-    //         setTripData((oldArray) =>[...oldArray,dat])
-    //     });
-    // }
 
     onValue(driverTripRef, (snapshot) =>{
       setTripData([]);
@@ -154,4 +146,4 @@ const SingleDriver = () => {
   );
 };
 
-export default SingleDriver;
+export default SingleTrip;
