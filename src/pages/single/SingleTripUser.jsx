@@ -29,7 +29,10 @@ const SingleTripUser = () => {
     get(child(dbRef, `All Ride Request/${uid}/chats`)).then((snapshot) => {
       setChat([])
       if (snapshot.exists()) {
-        setChat(snapshot.val());
+        // setChat(snapshot.val());
+        Object.values(snapshot.val()).map((dat) => {
+          setChat((oldArray) =>[...oldArray,dat])
+        });
       }
     }).catch((error) => {
       console.error(error);
@@ -58,7 +61,7 @@ const SingleTripUser = () => {
       console.error(error);
     });
   },[])
-console.log(driverInfo)
+
   const actionColumn = [
     {
       field: "action",
@@ -87,7 +90,7 @@ console.log(driverInfo)
               Users
             </Link>
             /
-            <a href="HREF" onClick={() => navigate(-1)} style={{textDecoration: 'none',color:"black"}}>
+            <a onClick={() => navigate(-1)} style={{textDecoration: 'none',color:"black"}}>
               Profile
             </a>
             /
@@ -146,49 +149,54 @@ console.log(driverInfo)
         </div>
         <div className="bottomTrip">
           <div className="leftTrip">
-            <h1 className="title">Chats</h1>
-            <div className="item">
-              <div className="center">
-                  <img
-                    src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                    alt=""
-                    className="itemImg"
-                  />
-                <div className="details">
-                  <h1 className="itemTitle">{userData.name}</h1>
-                  <div className="detailItem" style={{textAlign: "center",fontSize: 18}}>
-                    <span className="itemKey">{userData.email}</span>
-                  </div>
-                  <div className="detailItem" style={{textAlign: "center",fontSize: 17}}>
-                    <span className="itemKey">{userData.phone}</span>
-                  </div>
-                  <div className="detailItem" style={{textAlign: "center",fontSize: 17}}>
-                    <span className="itemKey">{userData.phone}</span>
-                  </div>
-                </div>
-
+              <div className="chatHeader">
+                <span className="title">Chats</span>
+              </div>
+            <div className="chat">
+              <div className="chatBody">
+                {chat.map((item,index) =>{
+                  console.log(item.textMessage)
+                  console.log(index)
+                  if(item.senderId === driverId){
+                    return(
+                      <div className="chatLeft" key={index}>
+                        <div className="chatLeftBubble">{item.textMessage}</div>
+                      </div>
+                    )
+                  }else{
+                    return(
+                      <div className="chatRight" key={index}>
+                        <div className="chatRightContainer">
+                          <div className="chatRightBubble">{item.textMessage}</div>
+                        </div>
+                      </div>
+                    )
+                  }
+                })}
               </div>
             </div>
           </div>
           <div className="rightTrip">
             <div className="tripDetails">
               <div className="columnOne">
+                <span className="tripInfoTitle" style={{fontSize:"18px"}}>Trip Details</span> <br />
                 <div className="itemInfoDetails">
-                  <span className="itemInfoTitle">Ratings</span> <br />
-                  <span className="itemInfo">{tripData.ratings}</span> <br />
-                  <span className="itemInfoTitle">Ride Started</span> <br />
-                  <span className="itemInfo">{tripData.time}</span> <br />
-                  <span className="itemInfoTitle">Origin (From)</span> <br />
+                  <span className="itemInfoTitle" style={{fontSize:"14px"}}>Ratings</span> <br />
+                  <span className="itemInfo">{tripData.ratings}</span> <hr />
+                  <span className="itemInfoTitle" style={{fontSize:"14px"}}>Ride Started</span> <br />
+                  <span className="itemInfo">{tripData.time}</span> <hr />
+                  <span className="itemInfoTitle" style={{fontSize:"14px"}}>Origin (From)</span> <br />
                   <span className="itemInfo">{tripData.originAddress}</span> <br />
                 </div>
               </div>
               <div className="columnTwo">
+                <span className="tripInfoTitle"></span> <br />
                 <div className="itemInfoDetails">
-                  <span className="itemInfoTitle">Fare Amount</span> <br />
-                  <span className="itemInfo">{endTrip.map(tp => {return(tp.fare_amount)})}</span> <br />
-                  <span className="itemInfoTitle">Ride Ended</span> <br />
-                  <span className="itemInfo">{tripData.time}</span> <br />
-                  <span className="itemInfoTitle">Destination (To)</span> <br />
+                  <span className="itemInfoTitle" style={{fontSize:"14px"}}>Fare Amount</span> <br />
+                  <span className="itemInfo">{endTrip.map(tp => {return(tp.fare_amount)})}</span><hr />
+                  <span className="itemInfoTitle" style={{fontSize:"14px"}}>Ride Ended</span> <br />
+                  <span className="itemInfo">{tripData.time}</span> <hr />
+                  <span className="itemInfoTitle" style={{fontSize:"14px"}}>Destination (To)</span> <br />
                   <span className="itemInfo">{tripData.destinationAddress}</span> <br />
                 </div>
               </div>

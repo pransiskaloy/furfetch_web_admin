@@ -131,14 +131,66 @@
         padding: 20px;
         display: flex;
         gap: 20px;
-  
+        
         .leftTrip {
-          flex: 1;
+          width:400px;
           -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
           box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
           padding: 20px;
           position: relative;
-  
+          
+          .chatHeader{
+            padding:10px;
+            background-color: dodgerblue;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+
+            span{
+              color:white;
+            }
+          }
+          .chat{
+            background-color: ghostwhite;
+            height: 400px;
+            overflow-y: auto;
+
+            .chatBody{
+              padding:10px;
+
+              .chatLeft{
+                width: 45%;
+                margin-bottom: 10px;
+                .chatLeftBubble{
+                  padding: 10px;
+                  word-wrap: break-word;
+                  border-top-left-radius: 10px;
+                  border-top-right-radius: 10px;
+                  border-bottom-right-radius: 10px;
+                  background-color: gainsboro;
+                }
+              }
+
+              .chatRight{
+                display: flex;
+                margin-bottom: 10px;
+                flex-direction: column;
+
+                .chatRightContainer{
+                  align-self: flex-end;
+                  width: 45%;
+                  .chatRightBubble{
+                    padding: 10px;
+                    color: white;
+                    word-wrap: break-word;
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                    background-color: dodgerblue;
+                    border-bottom-left-radius: 10px;
+                  }
+                }
+              }
+            }
+          }
           .editButton {
             position: absolute;
             top: 0;
@@ -195,7 +247,8 @@
         }
   
         .rightTrip {
-          flex: 2;
+          width:700px;
+          
           .tripDetails{
             -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
             box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
@@ -203,7 +256,13 @@
             color: gray;
             display:flex;
             justify-content: space-between;
-  
+            
+            .tripInfoTitle{
+              padding: 20px;
+              color: grey;
+              font-weight: bold;
+            }
+
             .columnOne,.columnTwo{
               width: 50%;
   

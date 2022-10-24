@@ -77,7 +77,7 @@ const Widget = ({ type }) => {
         isMoney: false,
         link: <>
         <Link to="/users" style={{ textDecoration: "none" }}>
-            View all users
+            View Users List
         </Link>
         </>,
         amount:countUser,
@@ -98,7 +98,7 @@ const Widget = ({ type }) => {
         isMoney: false,
         amount:countDriver,
         link: <><Link to="/drivers" style={{ textDecoration: "none" }}>
-        View all drivers
+        View Drivers List
     </Link>
     </>,
         icon: (
@@ -117,7 +117,7 @@ const Widget = ({ type }) => {
         title: "EARNINGS",
         isMoney: true,
       amount:parseFloat(totalEarnings.toFixed(2)),
-        link: "View earnings",
+        link: "",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -130,7 +130,10 @@ const Widget = ({ type }) => {
       data = {
         title: "TRIPS",
         isMoney: false,
-        link: "See details",
+        link: <><Link to="/trips" style={{ textDecoration: "none" }}>
+        View Trip List
+    </Link>
+    </>,
         amount:countTrip,
         icon: (
           <CardTravelIcon
