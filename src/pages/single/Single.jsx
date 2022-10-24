@@ -19,9 +19,9 @@ const Single = () => {
   const location = useLocation()
   const { userData } = location.state
   const [tripData, setTripData] = useState([]);
-  const [info, setInfo] = useState([]);
+
+  
   useEffect(() => {
-    const userRef = ref(db,'users/'+userData.uid);
     const userTripRef = ref(db,'All Ride Request');
     
     // onValue(userRef, (snapshot) =>{
@@ -48,7 +48,6 @@ const Single = () => {
     }
     );
   },[])
-  
   const actionColumn = [
     {
       field: "action",
@@ -57,7 +56,7 @@ const Single = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/trip/" state={{ uid :params.row.uid }} style={{ textDecoration: "none" }}>
+            <Link to="/users/trip-details" state={{ uid :params.row.uid, userData: userData, driverId: params.row.driverId }} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
           </div>
@@ -73,7 +72,7 @@ const Single = () => {
         <Button variant="text" onClick={() => navigate(-1)} className="backButton"><ArrowBackIosIcon/> Back</Button>
         <div className="breadcrumbs">
           <Breadcrumbs aria-label="breadcrumb">
-            <Link to="/users">
+            <Link to="/users"  style={{textDecoration: 'none'}}>
               Users
             </Link>
             /

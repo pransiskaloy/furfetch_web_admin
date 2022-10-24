@@ -38,7 +38,15 @@
         .item {
           display: flex;
           gap: 20px;
-
+          
+          .center{
+            margin:auto;
+          }
+          img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+          }
           .itemImg {
             width: 100px;
             height: 100px;
@@ -72,6 +80,30 @@
 
       .right {
         flex: 2;
+        .tripDetails{
+          -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+          box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+          padding: 10px;
+          color: gray;
+          display:flex;
+          justify-content: space-between;
+
+          .columnOne,.columnTwo{
+            width: 50%;
+
+            .itemInfoDetails{
+              padding: 10px;
+              .itemInfoTitle{
+                color: grey;
+                font-weight: bold;
+              }
+              .itemInfo{
+                padding-left: 20px;
+              }
+  
+            }
+          }
+        }
       }
     }
 

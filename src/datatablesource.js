@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
+import moment from 'moment';
 
 export const userColumns = [
-  { field: "uid", headerName: "ID", width: 280 },
+  { field: "uid", headerName: "ID", width: 280,hide:true },
   {
     field: "name",
     headerName: "User",
@@ -26,6 +27,8 @@ export const userColumns = [
     field: "date_created",
     headerName: "Date Created",
     width: 220,
+    valueFormatter: params => 
+    moment(params?.value).format("Do MMM YYYY, h:mm A"),
   },
 
   {
@@ -47,7 +50,7 @@ export const userColumns = [
   },
 ];
 export const driverColumns = [
-  { field: "id", headerName: "ID", width: 280 },
+  { field: "id", headerName: "ID", width: 280,hide:true },
   {
     field: "name",
     headerName: "User",
@@ -71,6 +74,8 @@ export const driverColumns = [
     field: "date_created",
     headerName: "Date Created",
     width: 220,
+    valueFormatter: params => 
+    moment(params?.value).format("Do MMM YYYY, h:mm A"),
   },
 
   {
@@ -93,7 +98,10 @@ export const driverColumns = [
 ];
 
 export const userTripHeader = [
-  { field: "time", headerName: "Date", width: 70 },
+  { field: "uid", headerName: "ID", width: 280,hide:true },
+  { field: "driverId", headerName: "ID", width: 280,hide:true },
+  { field: "time", headerName: "Date", width: 180,valueFormatter: params => 
+  moment(params?.value).format("Do MMM YYYY, h:mm A"), },
   {
     field: "driverName",
     headerName: "Driver",
@@ -132,7 +140,9 @@ export const userTripHeader = [
   },
 ];
 export const driverTripHeader = [
-  { field: "time", headerName: "Date", width: 70 },
+  { field: "uid", headerName: "ID", width: 280,hide:true },
+  { field: "time", headerName: "Date", width: 180,valueFormatter: params => 
+  moment(params?.value).format("Do MMM YYYY, h:mm A"), },
   {
     field: "userName",
     headerName: "User",
@@ -171,7 +181,10 @@ export const driverTripHeader = [
   },
 ];
 export const tripHeader = [
-  { field: "time", headerName: "Date", width: 70 },
+  
+  { field: "uid", headerName: "ID", width: 280,hide:true },
+  { field: "time", headerName: "Date", width: 180,valueFormatter: params => 
+  moment(params?.value).format("Do MMM YYYY, h:mm A"), },
   {
     field: "driverName",
     headerName: "Driver",

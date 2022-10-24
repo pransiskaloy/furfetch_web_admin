@@ -80,7 +80,7 @@ const SingleDriver = () => {
         <Button variant="text" onClick={() => navigate(-1)} className="backButton"><ArrowBackIosIcon/> Back</Button>
         <div className="breadcrumbs">
           <Breadcrumbs aria-label="breadcrumb">
-            <Link to="/drivers">
+            <Link to="/drivers"  style={{textDecoration: 'none'}}>
               Drivers
             </Link>
             /
