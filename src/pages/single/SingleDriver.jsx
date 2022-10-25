@@ -4,15 +4,20 @@ import Button from '@mui/material/Button';
 import { useEffect,useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useLocation } from 'react-router-dom'
+import PinIcon from '@mui/icons-material/PinTwoTone';
 import { useNavigate } from 'react-router-dom';
 import {db,} from "../../services/firebase.js"
+import StarIcon from '@mui/icons-material/StarTwoTone';
 import Chart from "../../components/chart/Chart";
-import Navbar from "../../components/navbar/Navbar";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Navbar from "../../components/navbar/Navbar";
+import PaletteIcon from '@mui/icons-material/PaletteTwoTone';
 import Sidebar from "../../components/sidebar/Sidebar";
+import CategoryIcon from '@mui/icons-material/CategoryTwoTone';
 import { driverTripHeader } from "../../datatablesource";
-import {ref, onValue, getDatabase,get,child} from 'firebase/database'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCarTwoTone';
+import {ref, onValue, getDatabase,get,child} from 'firebase/database'
 
 const SingleDriver = () => {
   const navigate = useNavigate();
@@ -20,6 +25,7 @@ const SingleDriver = () => {
   const { driverData } = location.state
   const [tripData, setTripData] = useState([]);
   const [info,setInfo] = useState([])
+  const [tripCount,setTripCount] = useState([])
   const driverId = driverData.id;
   useEffect(() => {
     const dbRef = ref(getDatabase())
@@ -43,12 +49,16 @@ const SingleDriver = () => {
 
     onValue(driverTripRef, (snapshot) =>{
       setTripData([]);
+      setTripCount([]);
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
+        let counter = 0
         Object.values(dataCheck).map((dat) => {
           if(driverId === dat.driverId && dat.status === "ended")
+            counter++
             setTripData((oldArray) =>[...oldArray,dat])
         });
+        setTripCount(counter)
       }
     }
     );
@@ -92,36 +102,71 @@ const SingleDriver = () => {
         <div className="top">
           <div className="left">
             {/* <div className="editButton">Edit</div> */}
-            <h1 className="title">Information</h1>
-            <div className="item">
-              <img
-                src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                alt=""
-                className="itemImg"
-              />
-              <div className="details">
-                <h1 className="itemTitle">{driverData.name}</h1>
-                <div className="detailItem">
-                  <span className="itemKey">Email:</span>
-                  <span className="itemValue">{driverData.email}</span>
+            <div className="personalInformation"> <br />
+              <div className="item">
+                <div className="center">
+                  <img
+                    src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+                    alt=""
+                    className="itemImg"
+                  /> <br />
+                  <div className="details">
+                    <h1 className="itemTitle">{driverData.name}</h1>
+                  </div>
+                  <div className="details">
+                    <span className="itemValue">{driverData.email}</span>
+                  </div>
+                  <div className="details">
+                    <span className="itemValue">{driverData.phone}</span>
+                  </div><br />
+                  <div className="widgetRow">
+                    <div className="widgetRowItem">
+                      <span className="widgetRowItemTitle">TRIPS</span> <br />
+                      <span className="widgetRowItemInfo">{tripCount}</span>
+                    </div>
+                    <div className="widgetRowItem">
+                      <span className="widgetRowItemTitle">RATINGS</span> <br />
+                      <div className="widgetRowItemInfoIcon">
+                        <span>{Number(info.ratings).toFixed(2)} </span> 
+                        <StarIcon fontSize="small" color="info"/>
+                      </div>
+                    </div>
+                    <div className="widgetRowItem">
+                      <span className="widgetRowItemTitle">EARNINGS</span> <br />
+                      <span className="widgetRowItemInfo">P{Number(info.earnings).toFixed(2)}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="detailItem">
-                  <span className="itemKey">Phone:</span>
-                  <span className="itemValue">{driverData.phone}</span>
+              </div>
+            </div>
+            <br/>
+            <div className="carInformation">
+              <div className="carInformationRow">
+                <div className="carInformationRowTitle">
+                  <DirectionsCarIcon className="icon" color="primary"/> &nbsp;<span > Car Model </span>
                 </div>
-                <div className="detailItem">
-                    <h3 className="itemTitle">Car Details</h3>
-                  <span className="itemKey">Color:</span>
-                  <span className="itemValue"> {driverData.car_details.car_color}</span>
+                <span style={{color:'#555'}}> {driverData.car_details.car_model} </span>
+              </div>
+              <hr />
+              <div className="carInformationRow">
+                <div className="carInformationRowTitle">
+                  <PinIcon className="icon" color="warning"/> &nbsp;<span > Plate Number </span>
                 </div>
-                <div className="detailItem">
-                  <span className="itemKey">Type:</span>
-                  <span className="itemValue"> {driverData.car_details.car_type}</span>
+                <span style={{color:'#555'}}> {driverData.car_details.car_number.toUpperCase()}</span>
+              </div>
+              <hr />
+              <div className="carInformationRow">
+                <div className="carInformationRowTitle">
+                  <PaletteIcon className="icon" color="error"/> &nbsp;<span > Color </span>
                 </div>
-                <div className="detailItem">
-                <span className="itemKey">Model:</span>
-                  <span className="itemValue"> {driverData.car_details.car_model} - {driverData.car_details.car_number}</span>
+                <span style={{color:'#555'}}> {driverData.car_details.car_color}</span>
+              </div>
+              <hr />
+              <div className="carInformationRow">
+                <div className="carInformationRowTitle">
+                  <CategoryIcon className="icon" color="success"/> &nbsp;<span > Type </span>
                 </div>
+                <span style={{color:'#555'}}> {driverData.car_details.car_type} </span>
               </div>
             </div>
           </div>
