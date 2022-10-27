@@ -212,21 +212,18 @@ const SingleDriver = () => {
                 </div>
                 <span style={{color:'#555'}}> {driverData.car_details.car_model} </span>
               </div>
-              <hr />
               <div className="carInformationRow">
                 <div className="carInformationRowTitle">
                   <PinIcon className="icon" color="warning"/> &nbsp;<span > Plate Number </span>
                 </div>
                 <span style={{color:'#555'}}> {driverData.car_details.car_number.toUpperCase()}</span>
               </div>
-              <hr />
               <div className="carInformationRow">
                 <div className="carInformationRowTitle">
                   <PaletteIcon className="icon" color="error"/> &nbsp;<span > Color </span>
                 </div>
                 <span style={{color:'#555'}}> {driverData.car_details.car_color}</span>
               </div>
-              <hr />
               <div className="carInformationRow">
                 <div className="carInformationRowTitle">
                   <CategoryIcon className="icon" color="success"/> &nbsp;<span > Type </span>
