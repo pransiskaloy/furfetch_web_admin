@@ -143,29 +143,156 @@
 
       .right {
         flex: 2;
-        .tripDetails{
-          -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-          box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
-          padding: 10px;
-          color: gray;
-          display:flex;
-          justify-content: space-between;
 
-          .columnOne,.columnTwo{
-            width: 50%;
+        .widgets{
+          display: flex;
+          padding: 20px;
+          gap: 20px;
 
-            .itemInfoDetails{
-              padding: 10px;
-              .itemInfoTitle{
-                color: grey;
+          .widget {
+            display: flex;
+            justify-content: space-between;
+            flex: 1;
+            padding: 20px ;
+            -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+            border-radius: 10px;
+            height: 100px;
+            width: 160px;
+          
+            .leftWidget,
+            .rightWidget {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              .widgetButton{
+                border: none;
+                background-color: white;
+                cursor: pointer;
+              }
+          
+              .title {
                 font-weight: bold;
+                font-size: 14px;
+                color: rgb(160, 160, 160);
               }
-              .itemInfo{
-                padding-left: 20px;
+          
+              .counter {
+                font-size: 28px;
+                font-weight: 300;
+                text-align: center;
               }
-  
+          
+              .link2 {
+                width: max-content;
+                font-size: 12px;
+                border-bottom: 1px solid gray;
+              }
+          
+              .percentage {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+          
+                &.positive {
+                  color: green;
+                }
+                &.negative {
+                  color: red;
+                }
+              }
+          
+              .icon {
+                font-size: 18px;
+                padding: 5px;
+                border-radius: 5px;
+                align-self: flex-end;
+              }
             }
           }
+        }
+        .tripContainer{
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+          background-color: ghostwhite;
+          -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+          box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+          .tripHeader{
+            color: white;
+            font-weight: bolder;
+            background-color: rgb(67, 160, 252);
+            padding: 15px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+          }
+
+          .tripBody{
+            padding: 15px 15px 30px 15px; 
+            height: 400px;
+            overflow-y: auto;
+
+            .tripTile{
+              display: flex;
+              flex-direction: row;
+              border-radius: 7px;
+              margin-bottom: 10px;
+              padding: 10px 20px 10px 20px;
+              justify-content: space-between;
+              -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+              box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+
+              .tripTileTitle{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                color:rgb(106, 106, 106);
+
+                .tripTileBody{
+                  display:flex;
+                  flex-direction: column;
+
+                  .tripTagSuccess{
+                    display: flex;
+                    font-size:13px;
+                    flex-wrap: wrap;
+                    color:#3B853E;
+                    font-weight: bold;
+                    align-items: center;
+                  }
+                  .tripTagCancel{
+                    display: flex;
+                    font-size:13px;
+                    flex-wrap: wrap;
+                    color:#D53B3B;
+                    font-weight: bold;
+                    align-items: center;
+                  }
+                }
+              }
+              .tripTileButton{
+                display:flex;
+                flex-direction: column;
+                text-align: right;
+
+                .tripLink{
+                  width: 85px;
+                  font-size:15px;
+                  padding-top: 2px;
+                  font-weight: bold;
+                  text-align: center;
+                  padding-bottom: 2px;
+                  border-radius: 15px;
+                  color:#4E6BAB;
+                  border: solid 2px #4E6BAB;
+                  background-color: #cddbfc;
+                }
+              }
+            }
+          }
+        }
+        .tripFooter{
+          margin-top: 10px;
         }
       }
     }
