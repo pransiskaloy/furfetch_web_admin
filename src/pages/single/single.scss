@@ -115,20 +115,21 @@
         .carInformation{
           padding-top: 10px;
           padding-bottom: 10px;
-          border-radius: 10px;
           position: relative;
-          -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
-          box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
-
+          
           .carInformationRow{
-            padding-left: 30px;
-            padding-right: 30px;
-            padding-top: 10px;
-            padding-bottom: 10px;
             display: flex;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            padding-left: 30px;
             flex-direction: row;
+            padding-right: 30px;
+            border-radius: 10px;
+            padding-bottom: 10px;
             justify-content: space-between;
-
+            -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+            
             .carInformationRowTitle{
               color: rgb(95, 94, 94);
               display: flex;
