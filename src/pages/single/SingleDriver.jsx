@@ -27,7 +27,7 @@ import {ref, onValue, getDatabase,get,child} from 'firebase/database'
 const SingleDriver = () => {
   const navigate = useNavigate();
   const location = useLocation()
-  const { driverData } = location.state
+const { driverData} = location.state
   const [tripData, setTripData] = useState([]);
   const [info,setInfo] = useState([])
   const [tripCount,setTripCount] = useState([])
@@ -35,6 +35,7 @@ const SingleDriver = () => {
   const [tripCanceledCount,setTripCanceledCount] = useState([])
   const driverId = driverData.id;
   const driverTripRef = ref(db,'All Ride Request');
+
   useEffect(() => {
     const dbRef = ref(getDatabase())
     get(child(dbRef, `drivers/${driverData.id}`)).then((snapshot) => {
@@ -61,15 +62,19 @@ const SingleDriver = () => {
         let cancelCounter = 0
         let allCounter = 0
         Object.values(dataCheck).map((dat) => {
-          allCounter++
-          if(driverId === dat.driverId && dat.status === "ended"){
-            counter++
-          }else{
-            cancelCounter++
+          if(driverId === dat.driverId ){
+            allCounter++
+            if(dat.status === "ended"){
+              counter++
+            }else{
+              cancelCounter++
+            }
           }
           switch (sort){
             case 'all':
-              setTripData((oldArray) =>[...oldArray,dat]);
+              if(driverId === dat.driverId){
+                setTripData((oldArray) =>[...oldArray,dat]);
+              };
               break;
             case 'ended':
               if(driverId === dat.driverId && dat.status === "ended"){
@@ -77,10 +82,13 @@ const SingleDriver = () => {
               };
               break;
             case 'canceled':
-              if(driverId === dat.driverId && dat.status === "ended"){
-              }else{
-                setTripData((oldArray) =>[...oldArray,dat])
-              };break;
+              if(driverId === dat.driverId ){
+                if(dat.status === "ended"){}
+                else{
+                  setTripData((oldArray) =>[...oldArray,dat])
+                };
+              }
+              break;
             default:setTripData([]);
           }
 
@@ -307,7 +315,6 @@ const SingleDriver = () => {
 
               </div>
             </div>
-            <div className="tripFooter"></div>
           </div>
         </div>
       </div>

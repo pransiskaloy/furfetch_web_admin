@@ -1,13 +1,15 @@
 import "./single.scss";
+import moment from 'moment';
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
 import { useEffect,useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 import {db,} from "../../services/firebase.js"
 import PinIcon from '@mui/icons-material/ClassTwoTone';
-import PetsIcon from '@mui/icons-material/Pets';
+import PetsIcon from '@mui/icons-material/PetsTwoTone';
 import Chart from "../../components/chart/Chart";
 import Navbar from "../../components/navbar/Navbar";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -18,11 +20,13 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import WrongLocationIcon from '@mui/icons-material/WrongLocation';
 import PaletteIcon from '@mui/icons-material/PaletteTwoTone';
 import CategoryIcon from '@mui/icons-material/CategoryTwoTone';
+import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
+import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone';
 import {ref, onValue, getDatabase,get,child} from 'firebase/database'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { display } from "@mui/system";
+
 
 const Single = () => {
   const navigate = useNavigate();
@@ -46,7 +50,7 @@ const Single = () => {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 350,
     bgcolor: 'background.paper',
     border: '0px solid #000',
     boxShadow: 24,
@@ -73,50 +77,34 @@ const Single = () => {
     });
 
     
-    // onValue(userRef, (snapshot) =>{
-    //   setInfo([]);
-    //   const dataCheck = snapshot.val();
-    //   if(dataCheck !== null){
-    //     setInfo(dataCheck);
-    //     // Object.values(dataCheck).map((dat) => {
-    //     //   setData((oldArray) =>[...oldArray,dat])
-    //     // });
-    //   }
-    // }
-    // );
     displayTrips(userTripRef,'all');
 
-    onValue(userTripRef, (snapshot) =>{
-      setTripData([]);
-      const dataCheck = snapshot.val();
-      if(dataCheck !== null){
-        Object.values(dataCheck).map((dat) => {
-          if(userData.uid === dat.userId && dat.status === "ended")
-            setTripData((oldArray) =>[...oldArray,dat])
-          
-        });
-      }
-    }
-    );
   },[])
   const displayTrips = (userTripRef,sort) => {
     onValue(userTripRef, (snapshot) =>{
       setTripData([]);
+      setTripCount([]);
+      setTripCanceledCount([]);
+      setAllTripCount([]);
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
         let counter = 0
         let cancelCounter = 0
         let allCounter = 0
         Object.values(dataCheck).map((dat) => {
-          allCounter++
-          if(userId === dat.userId && dat.status === "ended"){
-            counter++
-          }else{
-            cancelCounter++
+          if(userId === dat.userId ){
+            allCounter++
+            if(dat.status === "ended"){
+              counter++
+            }else{
+              cancelCounter++
+            }
           }
           switch (sort){
             case 'all':
+            if(userId === dat.userId){
               setTripData((oldArray) =>[...oldArray,dat]);
+            };
               break;
             case 'ended':
               if(userId === dat.userId && dat.status === "ended"){
@@ -124,10 +112,13 @@ const Single = () => {
               };
               break;
             case 'canceled':
-              if(userId === dat.userId && dat.status === "ended"){
-              }else{
-                setTripData((oldArray) =>[...oldArray,dat])
-              };break;
+              if(userId === dat.userId){
+                if(dat.status === "ended"){}
+                else{
+                  setTripData((oldArray) =>[...oldArray,dat])
+                };
+              }
+              break;
             default: setTripData([]);
           }
         });
@@ -208,7 +199,8 @@ const Single = () => {
       />
     ),
   };
-  console.log(petInfo)
+
+  
   return (
     <div className="single">
       <Sidebar />
@@ -253,7 +245,16 @@ const Single = () => {
             {petInfo.map((pet,index) => (
               <>
               <div key={index}>
-                <Button onClick={handleOpen}>Open modal {index}</Button>
+                <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',border: '1px solid dodgerblue',padding:'10px 20px',borderRadius:'20px'}}>
+                  <div className="carInformationRowTitle" style={{color: 'rgb(95, 94, 94)',display:'flex',fontWeight:'bolder',alignItems:'center',flexWrap:'wrap'}}>
+                  <img
+                    src="/images/pet.png"
+                    alt=""
+                    style={{width:'40px', height:'40px',borderRadius:'50%',objectFit:'cover'}}
+                  /> &nbsp;&nbsp;<span style={{fontSize:'20px'}}> {pet.pet_name} </span>
+                  </div>
+                  <Button onClick={handleOpen}>View Info</Button>
+                </div>
               </div>
               <Modal
               open={open}
@@ -261,51 +262,122 @@ const Single = () => {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={style} key={index}>
                   <Typography id="modal-modal-title" variant="h6" component="h2">
                     Pet Information
                   </Typography>
-                  <div className="carInformation">
-                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'20px',marginBottom:'20px'}}>
+                  <div className="carInformation" key={index}>
+                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',border: '1px solid dodgerblue',padding:'10px 20px',borderRadius:'20px'}}>
                       <div className="carInformationRowTitle" style={{color: 'rgb(95, 94, 94)',display:'flex',fontWeight:'bolder',alignItems:'center',flexWrap:'wrap'}}>
                         <PetsIcon className="icon" color="primary"/> &nbsp;<span > Pet Name </span>
                       </div>
                       <span style={{color:'#555'}}> {pet.pet_name} </span>
                     </div>
-                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'20px',marginBottom:'20px'}}>
+                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',border: '1px solid dodgerblue',padding:'10px 20px',borderRadius:'20px'}}>
                       <div className="carInformationRowTitle" style={{color: 'rgb(95, 94, 94)',display:'flex',fontWeight:'bolder',alignItems:'center',flexWrap:'wrap'}}>
                         <CategoryIcon className="icon" color="success"/> &nbsp;<span > Type </span>
                       </div>
                       <span style={{color:'#555'}}> {pet.pet_type} </span>
                     </div>
-                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'20px',marginBottom:'20px'}}>
+                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',border: '1px solid dodgerblue',padding:'10px 20px',borderRadius:'20px'}}>
                       <div className="carInformationRowTitle" style={{color: 'rgb(95, 94, 94)',display:'flex',fontWeight:'bolder',alignItems:'center',flexWrap:'wrap'}}>
                         <PinIcon className="icon" color="warning"/> &nbsp;<span > Breed </span>
                       </div>
                       <span style={{color:'#555'}}> {pet.pet_breed}</span>
                     </div>
-                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'20px',marginBottom:'20px'}}>
+                    <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',border: '1px solid dodgerblue',padding:'10px 20px',borderRadius:'20px'}}>
                       <div className="carInformationRowTitle" style={{color: 'rgb(95, 94, 94)',display:'flex',fontWeight:'bolder',alignItems:'center',flexWrap:'wrap'}}>
                         <PaletteIcon className="icon" color="error"/> &nbsp;<span > Color </span>
                       </div>
                       <span style={{color:'#555'}}> {pet.pet_color}</span>
                     </div>
-                  </div>
+                  </div> <br />
                   <Typography id="modal-modal-title" variant="h6" component="h4">
                     Remarks
-                  </Typography> <br />
-                  <Box component="span" sx={{margin: 2, p:1, border: '1px dashed grey' }}>
-                    {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}> */}
-                      {pet.pet_remarks}
-                    {/* </Typography> */}
-                  </Box>
+                  </Typography>
+                  <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'5px',border: '1px solid grey',padding:'10px 20px',borderRadius:'20px'}}>
+                      <span style={{color:'#555',padding:'10px'}}> {pet.pet_remarks}</span>
+                  </div>
                 </Box>
               </Modal>
               </>
             ))}
           </div>
           <div className="right">
-            <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" />
+            <div className="datatableTitle">
+              <div className="widgets">
+                {/* TOTAL TRIPS */}
+                <div className="widget">
+                  <div className="leftWidget">
+                    <span className="title">{widgetAllTrip.title}</span>
+                    <span className="counter">
+                      {widgetAllTrip.isMoney && "$"} {widgetAllTrip.amount}
+                    </span>
+                    
+                    <span className="link2">{widgetAllTrip.link}</span>
+                  </div>
+                  <div className="rightWidget">
+                    {widgetAllTrip.icon}
+                  </div>
+                </div>
+                {/* SUCCESS TRIP */}
+                <div className="widget">
+                  <div className="leftWidget">
+                    <span className="title">{widgetSuccessTrip.title}</span>
+                    <span className="counter">
+                      {widgetSuccessTrip.isMoney && "$"} {widgetSuccessTrip.amount}
+                    </span>
+                    
+                    <span className="link2">{widgetSuccessTrip.link}</span>
+                  </div>
+                  <div className="rightWidget">
+                    {widgetSuccessTrip.icon}
+                  </div>
+                </div>
+                {/* CANCEL TRIP */}
+                <div className="widget">
+                  <div className="leftWidget">
+                    <span className="title">{widgetCancelTrip.title}</span>
+                    <span className="counter">
+                      {widgetCancelTrip.isMoney && "$"} {widgetCancelTrip.amount}
+                    </span>
+                    
+                    <span className="link2">{widgetCancelTrip.link}</span>
+                  </div>
+                  <div className="rightWidget">
+                    {widgetCancelTrip.icon}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="tripContainer">
+              <div className="tripHeader">TRIP LIST</div>
+              <div className="tripBody">
+
+                {tripData.map((data) => (
+                  <div className="tripTile">
+                    <div className="tripTileTitle">
+                      <Avatar sx={{ bgcolor: 'dodgerblue',width:'70px',height:'70px' }} >{"Username".substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;&nbsp;
+                      <div className="tripTileBody">
+                        <span style={{fontWeight:"bolder",fontSize:"25px"}}>{data.userName}</span>
+                        <span style={{fontSize:"18px"}}>{data.destinationAddress}</span>{ data.status === "ended" ?
+                        <span className="tripTagSuccess"><CheckCircleTwoToneIcon color="success" sx={{width:'15px',heigh:'15px'}}/> Successful Trip</span>:
+                        <span className="tripTagCancel"><ErrorTwoToneIcon color="error" sx={{width:'15px',heigh:'15px'}}/>Canceled Trip</span>}
+                      </div>
+                    </div>
+                    <div className="tripTileButton">
+                      <span style={{fontSize:"17px"}}>{data.status === "ended" ? moment(data.end_trip.end_trip_time).format("MMM D"):moment(data.time).format("MMM D")}</span>
+                      {/* <span style={{fontSize:"17px"}}>{data.status}</span> */}
+                      <span style={{fontSize:"12px"}}>{data.status === "ended" ? moment(data.end_trip.end_trip_time).format("h:mm A"):moment(data.time).format("h:mm A")}</span> <br />
+                      <Link to="/drivers/trip/" state={{ uid :"uid" }} style={{textDecoration:'none'}}>
+                        <div className="tripLink">View Trip</div>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+
+              </div>
+            </div>
           </div>
         </div>
         <div className="bottom">
