@@ -86,11 +86,11 @@ export const driverColumns = [
   {
     field: "status",
     headerName: "Status",
-    width: 80,
+    width: 100,
     renderCell: (params) => {
       return (
         <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
+          {params.row.status === "forApproval" ? 'For Approval' : (params.row.status === "restricted" ? "Restricted": "Active")}
         </div>
       );
     },
@@ -183,22 +183,23 @@ export const driverTripHeader = [
 export const tripHeader = [
   
   { field: "uid", headerName: "ID", width: 280,hide:true },
+  { field: "userId", headerName: "USER ID", width: 280,hide:true },
+  { field: "driverId", headerName: "USER ID", width: 280,hide:true },
   { field: "time", headerName: "Date", width: 180,valueFormatter: params => 
   moment(params?.value).format("Do MMM YYYY, h:mm A"), },
-  {
-    field: "driverName",
-    headerName: "Driver",
-    width: 170,
-    renderCell: (params) => {
-      return (
-        <div className="cellWithImg">
-          <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.driverName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
-          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
-          {params.row.driverName}
-        </div>
-      );
-    },
-  },
+  // {
+  //   field: "driverName",
+  //   headerName: "Driver",
+  //   width: 170,
+  //   renderCell: (params) => {
+  //     return (
+  //       <div className="cellWithImg">
+  //         <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.driverName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
+  //         {params.row.driverName}
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     field: "userName",
     headerName: "User",
@@ -207,7 +208,6 @@ export const tripHeader = [
       return (
         <div className="cellWithImg">
           <Avatar sx={{ bgcolor: 'dodgerblue' }}>{params.row.userName.substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;
-          {/* <img className="cellImg" src={params.row.img} alt="avatar" /> */}
           {params.row.userName}
         </div>
       );
@@ -229,9 +229,18 @@ export const tripHeader = [
     width: 100,
     renderCell: (params) => {
       return (
-        <div className={`cellWithStatus ${params.row.status}`}>
-          {params.row.status}
-        </div>
+        params.row.status === 'ended' ? <div className={`cellWithStatus`} style={{fontWeight:'bolder',background:'#C1D8C2',color:'#668D27'}}>
+          {params.row.status.toUpperCase()}
+        </div> : params.row.status === 'Canceled' ? 
+          <div className={`cellWithStatus`} style={{fontWeight:'bolder',background:'#F2C1C1',color:'#D53B3B'}}>
+            {params.row.status.toUpperCase()}
+          </div> :params.row.status === 'pending' ? 
+          <div className={`cellWithStatus`} style={{fontWeight:'bolder',background:'#FBFBBD',color:'#F2A503'}}>
+            {params.row.status.toUpperCase()}
+          </div>:
+          <div className={`cellWithStatus`} style={{fontWeight:'bolder',background:'#899CC7',color:'#344772'}}>
+            {params.row.status.toUpperCase()}
+          </div>
       );
     },
   },

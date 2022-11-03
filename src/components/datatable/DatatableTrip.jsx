@@ -16,35 +16,42 @@ const DatatableTrip = () => {
   const [countTotalTrip, setCountTotalTrip] = useState(0);
   const [countSuccessTrip, setCountSuccessTrip] = useState(0);
   const [countCancelTrip,setCountCancelTrip] = useState(0);
-
-  // const handleDelete = (id) => {
-  //   setData(data.filter((item) => item.id !== id));
-  // };
+  const tripRef = ref(db,'All Ride Request');
 
   useEffect(() => {
-    const tripRef = ref(db,'All Ride Request');
+    trips(tripRef,'all')
+  },[])
+
+  const trips = (tripRef,sort) =>{
     onValue(tripRef, (snapshot) =>{
       setData([]);
-      let tripRow = [];
       let counter = 0;
       let counterSuccess = 0;
       let counterCancel = 0;
       setCountSuccessTrip(0);
       const dataCheck = snapshot.val();
       if(dataCheck !== null){
-        // snapshot.forEach(childSnap =>{
-        //   let keyName = childSnap.key;
-        //   let dataValue = childSnap.val();
-        //   tripRow.push({"key" : keyName,"data":dataValue})
-        // })
-        // setData(tripRow);
         Object.values(dataCheck).map((dat) => {
-          setData((oldArray) =>[...oldArray,dat])
           counter++
-          if(dat.status === "ended")
+          if(dat.status === "ended"){
             counterSuccess++
-          else
+          }else{
             counterCancel++
+          }
+          switch(sort){
+            case'all':setData((oldArray) =>[...oldArray,dat]);break;
+            case'ended':
+              if(dat.status === "ended")
+                setData((oldArray) =>[...oldArray,dat]);
+              break;
+            case'canceled':
+              if(dat.status === "ended"){
+              }else{
+                setData((oldArray) =>[...oldArray,dat]);
+              }
+            ;break;
+            default:setData([]);
+          }
         });
       }
       setCountTotalTrip(counter)
@@ -52,17 +59,16 @@ const DatatableTrip = () => {
       setCountCancelTrip(counterCancel)
     }
     );
-  },[])
-
-
-
+  }
   //temporary percentage
   const diff = 20;
   const widgetOverall = {
     title: "OVERALL TRIP",
     isMoney: false,
     amount:countTotalTrip,
-    link: <></>,
+    link: <><button onClick={()=>trips(tripRef,'all')} style={{borderBottom:'1px solid gray',background:'white',border:'none',cursor:'pointer'}}>
+    Display All
+  </button></>,
     icon: (
       <CardTravelIcon
         className="icon"
@@ -77,10 +83,9 @@ const DatatableTrip = () => {
     title: "SUCCESSFUL TRIP",
     isMoney: false,
     amount:countSuccessTrip,
-    link: <>
-    <Link to="/drivers" style={{ textDecoration: "none" }}>
-      View Drivers
-    </Link></>,
+    link: <><button onClick={()=>trips(tripRef,'ended')} style={{borderBottom:'1px solid gray',background:'white',border:'none',cursor:'pointer'}}>
+    Display Successful Trips
+  </button></>,
     icon: (
       <BeenhereIcon
         className="icon"
@@ -95,10 +100,9 @@ const DatatableTrip = () => {
     title: "CANCELED TRIP",
     isMoney: false,
     amount:countCancelTrip,
-    link: <>
-    <Link to="/drivers" style={{ textDecoration: "none" }}>
-      View Drivers
-    </Link></>,
+    link: <><button onClick={()=>trips(tripRef,'canceled')} style={{borderBottom:'1px solid gray',background:'white',border:'none',cursor:'pointer'}}>
+    Display Canceled Trips
+  </button></>,
     icon: (
       <WrongLocationIcon
         className="icon"
@@ -119,7 +123,7 @@ const DatatableTrip = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="trip-details" state={{ driverData :params.row }} style={{ textDecoration: "none" }}>
+            <Link to="trip-details" state={{uid:params.row.uid, driverId:params.row.driverId, userId :params.row.userId}} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             {/* <div

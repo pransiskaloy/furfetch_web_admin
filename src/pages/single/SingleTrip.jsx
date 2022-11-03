@@ -10,21 +10,22 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import {ref, getDatabase,get,child} from 'firebase/database'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-const SingleTripUser = () => {
+const SingleTrip = () => {
   const navigate = useNavigate();
   const location = useLocation()
-  const { uid, userData,driverId } = location.state
+  const { uid, userId,driverId } = location.state
   const [tripData, setTripData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [endTrip, setEndTrip] = useState([]);
   const [chat,setChat] = useState([])
   const [driverInfo,setDriverInfo] = useState([])
-
+  const dbRef = ref(getDatabase())
+    console.log(driverId)
   useEffect(() => {
-    const dbRef = ref(getDatabase())
+
     get(child(dbRef, `All Ride Request/${uid}/chats`)).then((snapshot) => {
       setChat([])
       if (snapshot.exists()) {
-        // setChat(snapshot.val());
         Object.values(snapshot.val()).map((dat) => {
           setChat((oldArray) =>[...oldArray,dat])
         });
@@ -51,6 +52,14 @@ const SingleTripUser = () => {
       setDriverInfo([])
       if (snapshot.exists()) {
         setDriverInfo(snapshot.val());
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+      setUserData([])
+      if (snapshot.exists()) {
+        setUserData(snapshot.val());
       }
     }).catch((error) => {
       console.error(error);
@@ -217,4 +226,4 @@ const SingleTripUser = () => {
   );
 };
 
-export default SingleTripUser;
+export default SingleTrip;

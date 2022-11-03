@@ -1,10 +1,10 @@
 import "./single.scss";
+import * as React from 'react';
 import moment from 'moment';
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { useEffect,useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import { useLocation } from 'react-router-dom'
 import PinIcon from '@mui/icons-material/PinTwoTone';
 import { useNavigate } from 'react-router-dom';
@@ -22,12 +22,22 @@ import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
 import WrongLocationIcon from '@mui/icons-material/WrongLocation';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCarTwoTone';
 import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone';
-import {ref, onValue, getDatabase,get,child} from 'firebase/database'
+import {ref, onValue, getDatabase,get,child,set} from 'firebase/database'
+import Badge from '@mui/material/Badge';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedTwoTone';
+import GppMaybeIcon from '@mui/icons-material/GppMaybeTwoTone';
+import PrivacyTipIcon from '@mui/icons-material/PrivacyTipTwoTone';
+import Tooltip from '@mui/material/Tooltip';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const SingleDriver = () => {
   const navigate = useNavigate();
   const location = useLocation()
-const { driverData} = location.state
+  const { driverData} = location.state
   const [tripData, setTripData] = useState([]);
   const [info,setInfo] = useState([])
   const [tripCount,setTripCount] = useState([])
@@ -35,6 +45,28 @@ const { driverData} = location.state
   const [tripCanceledCount,setTripCanceledCount] = useState([])
   const driverId = driverData.id;
   const driverTripRef = ref(db,'All Ride Request');
+  let driverStat = driverData.status
+  const [driverStatus, setDriverStatus] = useState(driverStat);
+  
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  const handleChange = (event) => {
+    setDriverStatus(event.target.value);
+    changeStatus(event.target.value)
+  };
+  
+  const changeStatus = (stat) => {
+    const db = getDatabase();
+    set(ref(db, `drivers/${driverData.id}/status`), stat);
+  }
 
   useEffect(() => {
     const dbRef = ref(getDatabase())
@@ -49,7 +81,8 @@ const { driverData} = location.state
 
     displayTrips(driverTripRef,'all');
     
-  },[])
+  },[driverStatus])
+  
   const displayTrips = (driverTripRef,sort) => {
     onValue(driverTripRef, (snapshot) =>{
       setTripData([]);
@@ -178,11 +211,31 @@ const { driverData} = location.state
             <div className="personalInformation"> <br />
               <div className="item">
                 <div className="center">
-                  <img
-                    src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                    alt=""
-                    className="itemImg"
-                  /> <br />
+                  <div className="details">
+                    <Badge 
+                      overlap="circular"
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                      badgeContent={
+                        <div style={{boxShadow:'2px 4px 10px 1px rgba(201, 201, 201, 0.47)',background:'white',borderRadius:'50%',padding:'3px',alignItems:'center',display:'flex',flexWrap:'wrap',border:'3px solid white'}}>
+                          {info.status === 'active' ?
+                            <Tooltip title="Active" placement="right" arrow>
+                              <VerifiedUserIcon fontSize="small" color="info"/> 
+                            </Tooltip>:
+                            (info.status === 'restricted' ? 
+                              <Tooltip title="Restricted" placement="right" arrow>
+                                  <GppMaybeIcon fontSize="small" color="error"/>
+                              </Tooltip>:
+                              <Tooltip title="For Approval" placement="right" arrow>
+                                <PrivacyTipIcon fontSize="small" color="warning"/>
+                              </Tooltip>
+                            )
+                          }
+                        </div>
+                      }
+                    >
+                      <Avatar className="itemImg" sx={{bgcolor: '#2196f3',fontWeight:'bolder',fontSize:'40px',alignItems:'center',display:'flex',flexWrap:'wrap'}} alt={driverData.name.toUpperCase()} src="/static/images/avatar/2.jpg" />
+                    </Badge>
+                  </div>
                   <div className="details">
                     <h1 className="itemTitle">{driverData.name}</h1>
                   </div>
@@ -200,16 +253,93 @@ const { driverData} = location.state
                     <div className="widgetRowItem">
                       <span className="widgetRowItemTitle">RATINGS</span> <br />
                       <div className="widgetRowItemInfoIcon">
-                        <span>{Number(info.ratings).toFixed(2)} </span> 
+                        <span>{info.ratings ? Number(info.ratings).toFixed(1) : '0.0'} </span> 
                         <StarIcon fontSize="small" color="info"/>
                       </div>
                     </div>
                     <div className="widgetRowItem">
                       <span className="widgetRowItemTitle">EARNINGS</span> <br />
-                      <span className="widgetRowItemInfo">P{Number(info.earnings).toFixed(2)}</span>
+                      <span className="widgetRowItemInfo">P {info.earnings? Number(info.earnings).toFixed(2): '0.00'}</span>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <br/>
+            <div className="carInformation">
+              <div className="carInformationRow2">
+                <div className="carInformationRowTitle">
+                  {info.status === 'active' ?
+                      <VerifiedUserIcon color="info"/>  :
+                    (info.status === 'restricted' ?  
+                    <GppMaybeIcon color="error"/> : 
+                        <PrivacyTipIcon color="warning"/>  
+                    )
+                  } &nbsp;<span > Status </span>
+                </div>
+                <Button aria-describedby={id} onClick={handleClick}>
+                  {info.status === 'active' ?
+                    <span style={{color:'#1976D2',background:'#CBE0F5',padding:'6px',borderRadius:'8px',fontWeight:'bolder',cursor:'pointer'}}> Active </span>:
+                    
+                  (info.status === 'restricted' ?
+                  <span style={{color:'#D53B3B',background:'#F2C1C1',padding:'6px',borderRadius:'8px',fontWeight:'bolder',cursor:'pointer'}}> Restricted </span>:
+                  <span style={{color:'#F2A503',background:'#FBFBBD',padding:'6px',borderRadius:'8px',fontWeight:'bolder',cursor:'pointer'}}> For Approval </span>
+                  )
+                  }
+                </Button>
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                >
+                  <Typography sx={{ p: 2 }}>
+                    <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap',alignItems:'center'}}>
+                      <strong> Current Status: </strong> 
+                      {info.status === 'active' ?
+                      <span style={{color:'#1976D2',background:'#CBE0F5',padding:'6px',borderRadius:'8px',fontWeight:'bolder',cursor:'default'}}> Active </span>:
+                      (info.status === 'restricted' ?
+                      <span style={{color:'#D53B3B',background:'#F2C1C1',padding:'6px',borderRadius:'8px',fontWeight:'bolder',cursor:'default'}}> Restricted </span>:
+                      <span style={{color:'#F2A503',background:'#FBFBBD',padding:'6px',borderRadius:'8px',fontWeight:'bolder',cursor:'default'}}> For Approval </span>
+                      )
+                      }  
+
+                    </div>
+                  </Typography> <hr />
+                  <Typography sx={{ pt: 2,pl:2,pr:2 }}><strong>Description:</strong> </Typography>
+                    {info.status === 'active' ?
+                      <Typography sx={{ p: 2,pl:2,pr:2 }}>Active Drivers can take ride requests.</Typography>:
+                      (info.status === 'restricted' ?
+                      <Typography sx={{ p: 2,pl:2,pr:2 }}>Restricted Drivers cannot take ride requests.</Typography>:
+                      <Typography sx={{ p: 2,pl:2,pr:2 }}>For Approval Drivers are newly joined drivers that needs to be reviewed.</Typography>
+                      )
+                    } <hr />
+                  <Typography sx={{p:2}}>
+                    <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                      <strong>
+                        Change Status
+                      </strong>
+                      <div>
+                      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                        <Select
+                          value={driverStatus}
+                          onChange={handleChange}
+                          // displayEmpty
+                          // inputProps={{ 'aria-label': 'Without label' }}
+                          >
+                          <MenuItem  value={'active'}>Activate</MenuItem>
+                          <MenuItem value={'restricted'}>Restrict</MenuItem>
+                        </Select>
+                      </FormControl>
+
+                      </div>
+                    </div>
+                  </Typography>
+                </Popover>
               </div>
             </div>
             <br/>

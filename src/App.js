@@ -1,13 +1,15 @@
 import Home from "./pages/home/Home";
+import Earnings from "./pages/home/Earnings";
 import Login from "./pages/login/Login";
 import ListDriver from "./pages/list/ListDriver";
 import ListTrip from "./pages/list/ListTrip";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
+import SingleTrip from "./pages/single/SingleTrip";
 import SingleDriver from "./pages/single/SingleDriver";
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { productInputs, userInputs } from "./formSource";
+import { userInputs } from "./formSource";
 import "./style/dark.scss";
 import { useContext ,useState} from "react";
 import { DarkModeContext } from "./context/darkModeContext";
@@ -30,6 +32,9 @@ function App() {
               {user ? 
             <>
               <Route index element={<Home />} />
+              <Route path="/earnings">
+                <Route index element={<Earnings />} />
+              </Route>
               <Route path="/users">
                 <Route index element={<List />} />
                 <Route path=":userId" element={<Single />} />
@@ -64,7 +69,7 @@ function App() {
                 <Route path=":productId" element={<Single />} />
                 <Route
                   path="trip-details"
-                  // element={<SingleTrip title="Add New Product" />}
+                  element={<SingleTrip title="Add New Product" />}
                   // element={<New inputs={productInputs} title="Add New Product" />}
                 />
               </Route>

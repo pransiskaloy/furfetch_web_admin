@@ -129,22 +129,6 @@ const Single = () => {
     }
     );
   }
-  const actionColumn = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 100,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-            <Link to="/users/trip-details" state={{ uid :params.row.uid, userData: userData, driverId: params.row.driverId }} style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
-            </Link>
-          </div>
-        );
-      },
-    },
-  ];
   const widgetAllTrip = {
     title: "All Trip",
     isMoney: false,
@@ -243,9 +227,9 @@ const Single = () => {
             </div>
             <br />
             {petInfo.map((pet,index) => (
-              <>
+              <div className="petInformation">
               <div key={index}>
-                <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',border: '1px solid dodgerblue',padding:'10px 20px',borderRadius:'20px'}}>
+                <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',padding:'10px 20px',borderRadius:'20px'}}>
                   <div className="carInformationRowTitle" style={{color: 'rgb(95, 94, 94)',display:'flex',fontWeight:'bolder',alignItems:'center',flexWrap:'wrap'}}>
                   <img
                     src="/images/pet.png"
@@ -300,7 +284,7 @@ const Single = () => {
                   </div>
                 </Box>
               </Modal>
-              </>
+              </div>
             ))}
           </div>
           <div className="right">
@@ -359,44 +343,23 @@ const Single = () => {
                     <div className="tripTileTitle">
                       <Avatar sx={{ bgcolor: 'dodgerblue',width:'70px',height:'70px' }} >{"Username".substring(0, 1).toUpperCase()}</Avatar> &nbsp;&nbsp;&nbsp;
                       <div className="tripTileBody">
-                        <span style={{fontWeight:"bolder",fontSize:"25px"}}>{data.userName}</span>
+                        <span style={{fontWeight:"bolder",fontSize:"25px"}}>{data.driverName ? data.driverName : 'No Driver Assigned' }</span>
                         <span style={{fontSize:"18px"}}>{data.destinationAddress}</span>{ data.status === "ended" ?
-                        <span className="tripTagSuccess"><CheckCircleTwoToneIcon color="success" sx={{width:'15px',heigh:'15px'}}/> Successful Trip</span>:
-                        <span className="tripTagCancel"><ErrorTwoToneIcon color="error" sx={{width:'15px',heigh:'15px'}}/>Canceled Trip</span>}
+                        <span className="tripTagSuccess"><CheckCircleTwoToneIcon color="success" sx={{width:'15px',heigh:'15px'}}/> SUCCESSFUL TRIP</span>:
+                        <span className="tripTagCancel"><ErrorTwoToneIcon color="error" sx={{width:'15px',heigh:'15px'}}/>{data.status.toUpperCase()} TRIP</span>}
                       </div>
                     </div>
                     <div className="tripTileButton">
                       <span style={{fontSize:"17px"}}>{data.status === "ended" ? moment(data.end_trip.end_trip_time).format("MMM D"):moment(data.time).format("MMM D")}</span>
                       {/* <span style={{fontSize:"17px"}}>{data.status}</span> */}
                       <span style={{fontSize:"12px"}}>{data.status === "ended" ? moment(data.end_trip.end_trip_time).format("h:mm A"):moment(data.time).format("h:mm A")}</span> <br />
-                      <Link to="/drivers/trip/" state={{ uid :"uid" }} style={{textDecoration:'none'}}>
+                      <Link to="/users/trip-details" state={{ uid :data.uid,driverId: data.driverId, userData:userInfo}} style={{textDecoration:'none'}}>
                         <div className="tripLink">View Trip</div>
                       </Link>
                     </div>
                   </div>
                 ))}
-
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="bottom">
-          <div className="left">
-            <h1 className="title">Trip History</h1>
-              {/* <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" /> */}
-          </div>
-          <div className="right">
-            <div className="datatable">
-              {/* <DataGrid
-                className="datagrid"
-                rows={tripData}
-                columns={userTripHeader.concat(actionColumn)}
-                getRowId = {(row) => row.id}
-                pageSize={9}
-                rowsPerPageOptions={[9]}
-                checkboxSelection
-                disableSelectionOnClick
-              /> */}
             </div>
           </div>
         </div>
