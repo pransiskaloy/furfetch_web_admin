@@ -10,22 +10,21 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import {ref, getDatabase,get,child} from 'firebase/database'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-const SingleTrip = () => {
+const SingleTripDriver = () => {
   const navigate = useNavigate();
   const location = useLocation()
-  const { uid, userId,driverId } = location.state
+  const { uid, driverData,driverId } = location.state
   const [tripData, setTripData] = useState([]);
-  const [userData, setUserData] = useState([]);
   const [endTrip, setEndTrip] = useState([]);
   const [chat,setChat] = useState([])
   const [driverInfo,setDriverInfo] = useState([])
-  const dbRef = ref(getDatabase())
 
   useEffect(() => {
-
+    const dbRef = ref(getDatabase())
     get(child(dbRef, `All Ride Request/${uid}/chats`)).then((snapshot) => {
       setChat([])
       if (snapshot.exists()) {
+        // setChat(snapshot.val());
         Object.values(snapshot.val()).map((dat) => {
           setChat((oldArray) =>[...oldArray,dat])
         });
@@ -52,14 +51,6 @@ const SingleTrip = () => {
       setDriverInfo([])
       if (snapshot.exists()) {
         setDriverInfo(snapshot.val());
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    get(child(dbRef, `users/${userId}`)).then((snapshot) => {
-      setUserData([])
-      if (snapshot.exists()) {
-        setUserData(snapshot.val());
       }
     }).catch((error) => {
       console.error(error);
@@ -91,8 +82,8 @@ const SingleTrip = () => {
         <Button variant="text" onClick={() => navigate(-1)} className="backButton"><ArrowBackIosIcon/> Back</Button>
         <div className="breadcrumbs">
           <Breadcrumbs aria-label="breadcrumb">
-            <Link to="/users" style={{textDecoration: 'none'}}>
-              Users
+            <Link to="/drivers" style={{textDecoration: 'none'}}>
+              Drivers
             </Link>
             /
             <a onClick={() => navigate(-1)} style={{textDecoration: 'none',color:"black"}}>
@@ -113,12 +104,12 @@ const SingleTrip = () => {
                     className="itemImg"
                   />
                 <div className="details">
-                  <h1 className="itemTitle">{userData.name}</h1>
+                  <h1 className="itemTitle">{driverData.name}</h1>
                   <div className="detailItem" style={{textAlign: "center",fontSize: 18}}>
-                    <span className="itemKey">{userData.email}</span>
+                    <span className="itemKey">{driverData.email}</span>
                   </div>
                   <div className="detailItem" style={{textAlign: "center",fontSize: 17}}>
-                    <span className="itemKey">{userData.phone}</span>
+                    <span className="itemKey">{driverData.phone}</span>
                   </div>
                 </div>
 
@@ -224,4 +215,4 @@ const SingleTrip = () => {
   );
 };
 
-export default SingleTrip;
+export default SingleTripDriver;

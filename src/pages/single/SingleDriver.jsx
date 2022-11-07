@@ -436,7 +436,7 @@ const SingleDriver = () => {
                       <span style={{fontSize:"17px"}}>{data.status === "ended" ? moment(data.end_trip.end_trip_time).format("MMM D"):moment(data.time).format("MMM D")}</span>
                       {/* <span style={{fontSize:"17px"}}>{data.status}</span> */}
                       <span style={{fontSize:"12px"}}>{data.status === "ended" ? moment(data.end_trip.end_trip_time).format("h:mm A"):moment(data.time).format("h:mm A")}</span> <br />
-                      <Link to="/drivers/trip/" state={{ uid :"uid" }} style={{textDecoration:'none'}}>
+                      <Link to="/drivers/trip-details/" state={{ uid :data.uid,driverId: data.driverId, driverData:info }} style={{textDecoration:'none'}}>
                         <div className="tripLink">View Trip</div>
                       </Link>
                     </div>

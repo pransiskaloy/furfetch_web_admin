@@ -163,8 +163,6 @@ const SingleTripUser = () => {
               <div className="chat">
                 <div className="chatBody">
                   {chat.map((item,index) =>{
-                    console.log(item.textMessage)
-                    console.log(index)
                     if(item.senderId === driverId){
                       return(
                         <div className="chatLeft" key={index}>

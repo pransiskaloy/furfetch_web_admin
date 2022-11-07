@@ -16,6 +16,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import { auth} from "./services/firebase"
 import {onAuthStateChanged} from "firebase/auth"
 import SingleTripUser from "./pages/single/SingleTripUser";
+import SingleTripDriver from "./pages/single/SingleTripDriver";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -60,8 +61,8 @@ function App() {
                   element={<New inputs={userInputs} title="Add New User" />}
                 />
                 <Route
-                  path="trip"
-                  element={<New inputs={userInputs} title="Trip Information" />}
+                  path="trip-details"
+                  element={<SingleTripDriver title="Driver Trip Details" />}
                 />
               </Route>
               <Route path="/trips">

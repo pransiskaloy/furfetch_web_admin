@@ -4,13 +4,11 @@ import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { useEffect,useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import { useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 import {db,} from "../../services/firebase.js"
 import PinIcon from '@mui/icons-material/ClassTwoTone';
 import PetsIcon from '@mui/icons-material/PetsTwoTone';
-import Chart from "../../components/chart/Chart";
 import Navbar from "../../components/navbar/Navbar";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Sidebar from "../../components/sidebar/Sidebar";
