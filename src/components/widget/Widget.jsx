@@ -76,7 +76,7 @@ const Widget = ({ type }) => {
         title: "USERS",
         isMoney: false,
         link: <>
-        <Link to="/users" style={{ textDecoration: "none" }}>
+        <Link to="/users" style={{ textDecoration: "none" ,color:'grey'}}>
             View Users List
         </Link>
         </>,
@@ -97,7 +97,7 @@ const Widget = ({ type }) => {
         title: "DRIVERS",
         isMoney: false,
         amount:countDriver,
-        link: <><Link to="/drivers" style={{ textDecoration: "none" }}>
+        link: <><Link to="/drivers" style={{ textDecoration: "none" ,color:'grey'}}>
         View Drivers List
     </Link>
     </>,
@@ -130,7 +130,7 @@ const Widget = ({ type }) => {
       data = {
         title: "TRIPS",
         isMoney: false,
-        link: <><Link to="/trips" style={{ textDecoration: "none" }}>
+        link: <><Link to="/trips" style={{ textDecoration: "none" ,color:'grey'}}>
         View Trip List
     </Link>
     </>,

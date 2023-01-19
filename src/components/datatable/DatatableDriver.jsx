@@ -109,11 +109,11 @@ const DatatableDriver = () => {
     ),
   };
   const widgetDataApproval = {
-    title: "NEW DRIVERS",
+    title: "PENDING APPLICATION",
     isMoney: false,
     amount:countNewDriver,
     link: <><button onClick={()=>drivers(driverRef,'forApproval')} style={{borderBottom:'1px solid gray',background:'white',border:'none',cursor:'pointer'}}>
-    Display New Drivers
+    Display Application
   </button></>,
     icon: (
       <PersonAddIcon
