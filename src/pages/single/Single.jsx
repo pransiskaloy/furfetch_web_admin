@@ -224,7 +224,7 @@ const Single = () => {
               </div>
             </div>
             <br />
-            {petInfo.map((pet,index) => (
+            {/* {petInfo.map((pet,index) => (
               <div className="petInformation">
               <div key={index}>
                 <div className="carInformationRow" style={{display:'flex',flexDirection:'row',alignItems: 'center',justifyContent: 'space-between',marginTop:'10px',marginBottom:'10px',padding:'10px 20px',borderRadius:'20px'}}>
@@ -283,7 +283,7 @@ const Single = () => {
                 </Box>
               </Modal>
               </div>
-            ))}
+            ))} */}
           </div>
           <div className="right">
             <div className="datatableTitle">

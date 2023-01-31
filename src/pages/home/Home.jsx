@@ -32,10 +32,12 @@ const Home = () => {
 
   var startOfWeek = moment().startOf('week').toDate();
   var endOfWeek   = moment().endOf('week').toDate();
+  var numberOfWeek = moment().format('w');
 
-  console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
-  console.log(format(new Date(moment().format()), 'yyyy-MM-dd'))
-  console.log(moment(endOfWeek).format('dddd'))
+  // console.log(numberOfWeek)
+  // console.log(moment().format('MMMM Do YYYY, h:mm:ss a'))
+  // console.log(format(new Date(moment().format()), 'yyyy-MM-dd'))
+  // console.log(moment(endOfWeek).format('dddd'))
   const [weekState,setWeekState] = useState([
     {
       startDate: startOfWeek,
@@ -92,20 +94,23 @@ const Home = () => {
                         }
                     }
                     else{
-                      switch(moment(earn.end_trip_time).format('dddd')){
-                        case 'Saturday':
-                          satTot = satTot + earn.fare_amount;break;
-                        case 'Sunday':
-                          sunTot = sunTot + earn.fare_amount;break;
-                        case 'Monday':
-                          monTot = monTot + earn.fare_amount;break;
-                        case 'Tuesday':
-                          tueTot = tueTot + earn.fare_amount;break;
-                        case 'Thursday':
-                          thurTot = thurTot + earn.fare_amount;break;
-                        case 'Friday':
-                          friTot = friTot + earn.fare_amount;break;
-                        default: setWeekly();
+                      // console.log(moment(earn.end_trip_time).format('W'))
+                      if(moment(earn.end_trip_time).format('W') === numberOfWeek){
+                        switch(moment(earn.end_trip_time).format('dddd')){
+                          case 'Saturday':
+                            satTot = satTot + earn.fare_amount;break;
+                          case 'Sunday':
+                            sunTot = sunTot + earn.fare_amount;break;
+                          case 'Monday':
+                            monTot = monTot + earn.fare_amount;break;
+                          case 'Tuesday':
+                            tueTot = tueTot + earn.fare_amount;break;
+                          case 'Thursday':
+                            thurTot = thurTot + earn.fare_amount;break;
+                          case 'Friday':
+                            friTot = friTot + earn.fare_amount;break;
+                          default: setWeekly();
+                        }
                       }
                     }
                 })
