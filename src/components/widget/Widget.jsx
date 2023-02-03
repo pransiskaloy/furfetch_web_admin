@@ -68,7 +68,7 @@ const Widget = ({ type }) => {
   },[])
 
   //temporary
-  const diff = 20;
+  const diff ="";
 
   switch (type) {
     case "user":
@@ -155,7 +155,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "P"} {data.amount}
+          {data.isMoney && "Php"} {data.amount}
         </span>
         
         <span className="link">{data.link}</span>
@@ -163,7 +163,7 @@ const Widget = ({ type }) => {
       <div className="right">
         <div className="percentage positive">
           <KeyboardArrowUpIcon />
-          {diff} %
+          {diff}
         </div>
         {data.icon}
       </div>
