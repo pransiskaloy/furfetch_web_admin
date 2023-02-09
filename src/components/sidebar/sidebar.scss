@@ -11,7 +11,7 @@
     justify-content: center;
 
     .logo {
-      font-size: 20px;
+      font-size: 25px;
       font-weight: bold;
       color: #6439ff;
     }
@@ -31,9 +31,9 @@
       padding: 0;
 
       .title {
-        font-size: 10px;
+        font-size: 13px;
         font-weight: bold;
-        color: #999;
+        color: #c0bfbf;
         margin-top: 15px;
         margin-bottom: 5px;
       }
@@ -49,12 +49,12 @@
         }
 
         .icon {
-          font-size: 18px;
-          color: #7451f8;
+          font-size: 30px;
+          color: rgb(67, 160, 252);
         }
 
         span{
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 600;
             color: #888;
             margin-left: 10px;
@@ -72,7 +72,7 @@
           width: 20px;
           height: 20px;
           border-radius: 5px;
-          border: 1px solid #7451f8;
+          border: 1px solid rgb(67, 160, 252);
           cursor: pointer;
           margin: 5px;
 

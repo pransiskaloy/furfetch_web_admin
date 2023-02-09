@@ -8,7 +8,7 @@ import { useEffect,useState } from "react";
 import { useLocation } from 'react-router-dom'
 import PinIcon from '@mui/icons-material/PinTwoTone';
 import { useNavigate } from 'react-router-dom';
-import {db,} from "../../services/firebase.js"
+import {db,storage} from "../../services/firebase.js"
 import StarIcon from '@mui/icons-material/StarTwoTone';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Navbar from "../../components/navbar/Navbar";
@@ -34,6 +34,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
+
 const SingleDriver = () => {
   const navigate = useNavigate();
   const location = useLocation()
@@ -48,7 +56,36 @@ const SingleDriver = () => {
   let driverStat = driverData.status
   const [driverStatus, setDriverStatus] = useState(driverStat);
   
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+
+  const [openImage, setOpenImage] = useState(false);
+  const [position, setPosition] = React.useState("bottom");
+  const [width, setWidth] = React.useState(120);
+  const [height, setHeight] = React.useState(80);
+  const [border, setBorder] = React.useState(1);
+  const [borderRadius, setBorderRadius] = React.useState(4);
+  const [padding, setPadding] = React.useState(4);
+  const [gap, setGap] = React.useState(16);
+  const [preload, setPreload] = React.useState(2);
+  const [animationDuration, setAnimationDuration] = React.useState(500);
+  const [maxZoomPixelRatio, setMaxZoomPixelRatio] = React.useState(1);
+  const [zoomInMultiplier, setZoomInMultiplier] = React.useState(2);
+  const [doubleTapDelay, setDoubleTapDelay] = React.useState(300);
+  const [doubleClickDelay, setDoubleClickDelay] = React.useState(300);
+  const [doubleClickMaxStops, setDoubleClickMaxStops] = React.useState(2);
+  const [keyboardMoveDistance, setKeyboardMoveDistance] = React.useState(50);
+  const [wheelZoomDistanceFactor, setWheelZoomDistanceFactor] = React.useState(
+    100
+  );
+  const [pinchZoomDistanceFactor, setPinchZoomDistanceFactor] = React.useState(
+    100
+  );
+  const [scrollToZoom, setScrollToZoom] = React.useState(false);
+
+
+  console.log(driverData)
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -70,6 +107,7 @@ const SingleDriver = () => {
 
   useEffect(() => {
     const dbRef = ref(getDatabase())
+
     get(child(dbRef, `drivers/${driverData.id}`)).then((snapshot) => {
       setInfo([])
       if (snapshot.exists()) {
@@ -78,6 +116,7 @@ const SingleDriver = () => {
     }).catch((error) => {
       console.error(error);
     });
+
 
     displayTrips(driverTripRef,'all');
     
@@ -207,7 +246,6 @@ const SingleDriver = () => {
         </div>
         <div className="top">
           <div className="left">
-            {/* <div className="editButton">Edit</div> */}
             <div className="personalInformation"> <br />
               <div className="item">
                 <div className="center">
@@ -233,7 +271,7 @@ const SingleDriver = () => {
                         </div>
                       }
                     >
-                      <Avatar className="itemImg" sx={{bgcolor: '#2196f3',fontWeight:'bolder',fontSize:'40px',alignItems:'center',display:'flex',flexWrap:'wrap'}} alt={driverData.name.toUpperCase()} src="/static/images/avatar/2.jpg" />
+                      <Avatar className="itemImg" sx={{bgcolor: '#2196f3',fontWeight:'bolder',fontSize:'40px',alignItems:'center',display:'flex',flexWrap:'wrap'}} alt={driverData.name.toUpperCase()} src={driverData.ImagesUploaded === "done" ? driverData.profileImage : ''} />
                     </Badge>
                   </div>
                   <div className="details">
@@ -266,6 +304,52 @@ const SingleDriver = () => {
               </div>
             </div>
             <br/>
+            <div className="ImagesSubmitted">
+              <Lightbox
+                open={openImage}
+                close={() => setOpenImage(false)}
+                slides={[
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.carimage : '', title: "Car", description: driverData.car_details.car_model+"\n"+driverData.car_details.car_color+"\n"+driverData.car_details.car_number.toUpperCase() },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.imagewliscense : '', title: "Slide title", description: "Slide description" },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.liscenseimage : '', title: "License", description: "Slide description" },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.nbiimage : '', title: "NBI", description: "Slide description" },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.orcrimage : '', title: "ORCR", description: "Slide description" },
+                ]}
+                carousel={{ preload }}
+                plugins={[Captions,Thumbnails,Zoom]}
+                thumbnails={{
+                  position,
+                  width,
+                  height,
+                  border,
+                  borderRadius,
+                  padding,
+                  gap
+                }}
+                animation={{ zoom: animationDuration }}       
+                zoom={{
+                  maxZoomPixelRatio,
+                  zoomInMultiplier,
+                  doubleTapDelay,
+                  doubleClickDelay,
+                  doubleClickMaxStops,
+                  keyboardMoveDistance,
+                  wheelZoomDistanceFactor,
+                  pinchZoomDistanceFactor,
+                  scrollToZoom
+                }}
+              />
+
+
+              <div className="image-row">
+                <div className="image-set">
+                  <img className="example-image-link" src={driverData.ImagesUploaded === "done" ? driverData.carimage : ''} height={40} width={40} alt="Two men in bicycle jerseys sitting outside at table having coffee" />
+                </div>
+                <button type="button" onClick={() => setOpenImage(true)}>
+                  View Credentials
+                </button>
+              </div>
+            </div>
             <div className="carInformation">
               <div className="carInformationRow2">
                 <div className="carInformationRowTitle">
