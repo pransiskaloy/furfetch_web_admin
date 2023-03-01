@@ -13,7 +13,15 @@ const Datatable = () => {
   
   const [data, setData] = useState([]);
   const [countUser, setCountUser] = useState(0);
-
+  function generateRandom() {
+    var length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
 
   useEffect(() => {
     const userRef = ref(db,'users');
@@ -105,7 +113,7 @@ const Datatable = () => {
         className="datagrid"
         rows={data}
         columns={userColumns.concat(actionColumn)}
-        getRowId = {(row) => row.uid}
+        getRowId={() =>generateRandom()}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

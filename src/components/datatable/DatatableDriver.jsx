@@ -20,7 +20,7 @@ const DatatableDriver = () => {
   const [countDriverDeactivated,setCountDriverDeactivated] = useState(0);
   const driverRef = ref(db,'drivers');
 
-
+ 
   useEffect(() => {
     drivers(driverRef,'all')
   },[])
@@ -253,11 +253,11 @@ const DatatableDriver = () => {
       <DataGrid
         className="datagrid"
         rows={data}
-        columns={driverColumns.concat(actionColumn)}
         getRowId = {(row) => row.id}
+        columns={driverColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        // checkboxSelection
         disableSelectionOnClick
       />
     </div>

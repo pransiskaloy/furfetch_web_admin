@@ -117,8 +117,7 @@
           box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
         }
         .carInformation{
-          padding-top: 10px;
-          padding-bottom: 10px;
+          padding-bottom: 5px;
           position: relative;
           -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
           box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
@@ -164,8 +163,8 @@
         }
         .ImagesSubmitted{
           margin-bottom: 20px;
-          padding-top: 10px;
-          padding-bottom: 10px;
+          padding-top: 15px;
+          padding-bottom: 15px;
           padding-left: 30px;
           border-radius: 10px;
           -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
@@ -174,8 +173,21 @@
           .image-row{
             display: flex;
             flex-direction:row;
-            .image-set{
-
+            justify-content: space-between;
+            padding-right: 20px;
+            
+            .credential-title-row{
+              color: rgb(95, 94, 94);
+              display: flex;
+              font-weight: bolder;
+              align-items: center;
+              flex-wrap: wrap;
+            }
+            .credential-image-row{
+              width: 50%;
+              display: flex;
+              flex-direction:row;
+              flex-flow: row-reverse;
             }
           }
 

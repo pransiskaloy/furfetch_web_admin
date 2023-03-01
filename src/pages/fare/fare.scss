@@ -1,0 +1,11 @@
+.fare{
+    height: 520px;
+    display: flex;
+
+    .fareContainer{
+        flex: 6;
+        .fareTitle{
+            padding:20px;
+        }
+    }
+}

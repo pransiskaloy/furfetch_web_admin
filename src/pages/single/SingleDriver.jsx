@@ -8,7 +8,8 @@ import { useEffect,useState } from "react";
 import { useLocation } from 'react-router-dom'
 import PinIcon from '@mui/icons-material/PinTwoTone';
 import { useNavigate } from 'react-router-dom';
-import {db,storage} from "../../services/firebase.js"
+import {db} from "../../services/firebase.js"
+import { lightBlue,grey } from '@mui/material/colors';
 import StarIcon from '@mui/icons-material/StarTwoTone';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Navbar from "../../components/navbar/Navbar";
@@ -25,6 +26,8 @@ import CheckCircleTwoToneIcon from '@mui/icons-material/CheckCircleTwoTone';
 import {ref, onValue, getDatabase,get,child,set} from 'firebase/database'
 import Badge from '@mui/material/Badge';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedTwoTone';
+import CollectionsTwoToneIcon from '@mui/icons-material/CollectionsTwoTone';
+import PermMediaTwoToneIcon from '@mui/icons-material/PermMediaTwoTone';
 import GppMaybeIcon from '@mui/icons-material/GppMaybeTwoTone';
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTipTwoTone';
 import Tooltip from '@mui/material/Tooltip';
@@ -84,7 +87,7 @@ const SingleDriver = () => {
   const [scrollToZoom, setScrollToZoom] = React.useState(false);
 
 
-  console.log(driverData)
+  // console.log(driverData)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -304,52 +307,7 @@ const SingleDriver = () => {
               </div>
             </div>
             <br/>
-            <div className="ImagesSubmitted">
-              <Lightbox
-                open={openImage}
-                close={() => setOpenImage(false)}
-                slides={[
-                    { src: driverData.ImagesUploaded === 'done' ? driverData.carimage : '', title: "Car", description: driverData.car_details.car_model+"\n"+driverData.car_details.car_color+"\n"+driverData.car_details.car_number.toUpperCase() },
-                    { src: driverData.ImagesUploaded === 'done' ? driverData.imagewliscense : '', title: "Slide title", description: "Slide description" },
-                    { src: driverData.ImagesUploaded === 'done' ? driverData.liscenseimage : '', title: "License", description: "Slide description" },
-                    { src: driverData.ImagesUploaded === 'done' ? driverData.nbiimage : '', title: "NBI", description: "Slide description" },
-                    { src: driverData.ImagesUploaded === 'done' ? driverData.orcrimage : '', title: "ORCR", description: "Slide description" },
-                ]}
-                carousel={{ preload }}
-                plugins={[Captions,Thumbnails,Zoom]}
-                thumbnails={{
-                  position,
-                  width,
-                  height,
-                  border,
-                  borderRadius,
-                  padding,
-                  gap
-                }}
-                animation={{ zoom: animationDuration }}       
-                zoom={{
-                  maxZoomPixelRatio,
-                  zoomInMultiplier,
-                  doubleTapDelay,
-                  doubleClickDelay,
-                  doubleClickMaxStops,
-                  keyboardMoveDistance,
-                  wheelZoomDistanceFactor,
-                  pinchZoomDistanceFactor,
-                  scrollToZoom
-                }}
-              />
-
-
-              <div className="image-row">
-                <div className="image-set">
-                  <img className="example-image-link" src={driverData.ImagesUploaded === "done" ? driverData.carimage : ''} height={40} width={40} alt="Two men in bicycle jerseys sitting outside at table having coffee" />
-                </div>
-                <button type="button" onClick={() => setOpenImage(true)}>
-                  View Credentials
-                </button>
-              </div>
-            </div>
+            
             <div className="carInformation">
               <div className="carInformationRow2">
                 <div className="carInformationRowTitle">
@@ -427,6 +385,58 @@ const SingleDriver = () => {
               </div>
             </div>
             <br/>
+            <div className="ImagesSubmitted">
+              <Lightbox
+                open={openImage}
+                close={() => setOpenImage(false)}
+                slides={[
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.carimage : '', title: "Car", description: driverData.car_details.car_model+"\n"+driverData.car_details.car_color+"\n"+driverData.car_details.car_number.toUpperCase() },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.imagewliscense : '', title: "Slide title", description: "Slide description" },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.liscenseimage : '', title: "License", description: "Slide description" },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.nbiimage : '', title: "NBI", description: "Slide description" },
+                    { src: driverData.ImagesUploaded === 'done' ? driverData.orcrimage : '', title: "ORCR", description: "Slide description" },
+                ]}
+                carousel={{ preload }}
+                plugins={[Captions,Thumbnails,Zoom]}
+                thumbnails={{
+                  position,
+                  width,
+                  height,
+                  border,
+                  borderRadius,
+                  padding,
+                  gap
+                }}
+                animation={{ zoom: animationDuration }}       
+                zoom={{
+                  maxZoomPixelRatio,
+                  zoomInMultiplier,
+                  doubleTapDelay,
+                  doubleClickDelay,
+                  doubleClickMaxStops,
+                  keyboardMoveDistance,
+                  wheelZoomDistanceFactor,
+                  pinchZoomDistanceFactor,
+                  scrollToZoom
+                }}
+              />
+
+
+              <div className="image-row">
+                <div className="credential-title-row">
+                  <CollectionsTwoToneIcon color="info"/> &nbsp;
+                  <span>Credentials</span>
+                </div>
+                <div className="credential-image-row">
+                  <Button sx={{ bgcolor: lightBlue[500] }} variant="contained">
+                    <PermMediaTwoToneIcon onClick={() => setOpenImage(true)} />
+                  </Button>&nbsp;
+                  <Avatar sx={{ bgcolor: lightBlue[500] }} variant="rounded">
+                    <img className="example-image-link" onClick={() => setOpenImage(true)} src={driverData.ImagesUploaded === "done" ? driverData.carimage : ''} height={40} width={40} alt="Two men in bicycle jerseys sitting outside at table having coffee" />
+                  </Avatar> 
+                </div>
+              </div>
+            </div>
             <div className="carInformation">
               <div className="carInformationRow">
                 <div className="carInformationRowTitle">

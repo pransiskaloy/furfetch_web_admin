@@ -1,6 +1,7 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import CardTravelIcon from "@mui/icons-material/CardTravel";
@@ -17,6 +18,12 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import {auth } from "../../services/firebase"
 import {signOut} from "firebase/auth"
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
+import CommuteIcon from '@mui/icons-material/Commute';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
@@ -47,11 +54,24 @@ const Sidebar = () => {
               <span>Earnings</span>
             </li>
           </Link>
+          <p className="title">PROFILE</p>
+          <Link to="/profile"  style={{ textDecoration: "none" }}>
+            <li>
+              <AccountCircleOutlinedIcon className="icon" />
+              <span>My Account</span>
+            </li>
+          </Link>
+          <Link to="/staff/register" style={{ textDecoration: "none" }}>
+            <li>
+              <SupervisorAccountIcon className="icon" />
+              <span>Staff</span>
+            </li>
+          </Link>
           <p className="title">LISTS</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>Users</span>
+              <span>App Users</span>
             </li>
           </Link>
           <Link to="/drivers" style={{ textDecoration: "none" }}>
@@ -92,11 +112,37 @@ const Sidebar = () => {
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
           </li> */}
-          <p className="title">USER</p>
+          
+          <p className="title">REPORTS</p>
           <li>
-            <AccountCircleOutlinedIcon className="icon" />
-            <span>Profile</span>
+            <AssessmentIcon className="icon" />
+            <span>Sales</span>
           </li>
+          <li>
+            <ContactPageIcon className="icon" />
+            <span>App Users</span>
+          </li>
+          <li>
+            <CommuteIcon className="icon" />
+            <span>Drivers</span>
+          </li>
+          <li>
+            <AnnouncementIcon className="icon" />
+            <span>Complaints</span>
+          </li>
+          <p className="title">SETTINGS</p>
+          <Link to="/fare" style={{ textDecoration: "none" }}>
+            <li>
+              <AttachMoneyIcon className="icon" />
+              <span>Fare</span>
+            </li>
+          </Link>
+          <Link to="/trips" style={{ textDecoration: "none" }}>
+            <li>
+              <SubscriptionsIcon className="icon" />
+              <span>Subscription</span>
+            </li>
+          </Link><br /> <hr /> <br />
           <Link to="/" style={{ textDecoration: "none" }}>
             <li onClick={logOut}>
               <ExitToAppIcon className="icon" />
@@ -105,7 +151,7 @@ const Sidebar = () => {
           </Link>
         </ul>
       </div>
-      <div className="bottom">
+      {/* <div className="bottom">
         <div
           className="colorOption"
           onClick={() => dispatch({ type: "LIGHT" })}
@@ -114,7 +160,7 @@ const Sidebar = () => {
           className="colorOption"
           onClick={() => dispatch({ type: "DARK" })}
         ></div>
-      </div>
+      </div> */}
     </div>
   );
 };

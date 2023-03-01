@@ -7,6 +7,7 @@ import List from "./pages/list/List";
 import Single from "./pages/single/Single";
 import SingleTrip from "./pages/single/SingleTrip";
 import SingleDriver from "./pages/single/SingleDriver";
+import Profile from "./pages/profile/Profile";
 import New from "./pages/new/New";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { userInputs } from "./formSource";
@@ -17,6 +18,8 @@ import { auth} from "./services/firebase"
 import {onAuthStateChanged} from "firebase/auth"
 import SingleTripUser from "./pages/single/SingleTripUser";
 import SingleTripDriver from "./pages/single/SingleTripDriver";
+import {db} from "./services/firebase.js"
+import Fare from "./pages/fare/Fare";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -25,6 +28,9 @@ function App() {
   onAuthStateChanged(auth,(currentUser) =>{
       setUser(currentUser);
     })
+
+  const staffRef = (db,'staffs');
+
   return (
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
@@ -35,6 +41,15 @@ function App() {
               <Route index element={<Home />} />
               <Route path="/earnings">
                 <Route index element={<Earnings />} />
+              </Route>
+              <Route path="/profile">
+                <Route index element={<Profile />} />
+              </Route> 
+              <Route path="/staff">
+                <Route
+                    path="register"
+                    element={<New inputs={userInputs} title="Add New Staff" />}
+                  />
               </Route>
               <Route path="/users">
                 <Route index element={<List />} />
@@ -52,6 +67,9 @@ function App() {
                   path="trip"
                   element={<New inputs={userInputs} title="Trip Information" />}
                 />
+              </Route>
+              <Route path="/fare">
+                <Route index element={<Fare />} />
               </Route>
               <Route path="/drivers">
                 <Route index element={<ListDriver />} />

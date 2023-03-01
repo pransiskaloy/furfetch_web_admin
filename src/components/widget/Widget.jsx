@@ -116,7 +116,7 @@ const Widget = ({ type }) => {
       data = {
         title: "EARNINGS",
         isMoney: true,
-      amount:parseFloat(totalEarnings.toFixed(2)),
+      amount:Number(parseFloat(totalEarnings)).toFixed(2),
         link: "",
         icon: (
           <MonetizationOnOutlinedIcon

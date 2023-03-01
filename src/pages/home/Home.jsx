@@ -126,7 +126,7 @@ const Home = () => {
               {name:'Friday',Total:friTot},
               {name:'Saturday',Total:satTot},
             ])
-            setPercentage( Number((total / totalMonthly) * 100).toFixed(2) )
+            setPercentage( Number((total / totalMonthly) * 100) )
             setTotalEarnings(total)
             setTotalEarningsMonthly(totalMonthly)
           }
@@ -150,13 +150,13 @@ const Home = () => {
               <h1 className="title">Total Monthly Earning</h1>
               <MoreVertIcon fontSize="small" />
             </div>
-              <p className="amount" style={{textAlign:'center'}}>Php {totalEarningsMonthly}</p>
+              <p className="amount" style={{textAlign:'center'}}>Php {Number(totalEarningsMonthly).toFixed(2)}</p>
             <div className="bottom">
               <div className="featuredChart">
                 <CircularProgressbar value={percentage} text={percentage + '%'} strokeWidth={5} />
               </div>
               <p className="title">Total earnings made today</p>
-              <p className="amount">Php {totalEarnings}</p>
+              <p className="amount">Php {Number(totalEarnings).toFixed(2)}</p>
               <p className="desc">
                 Previous transactions processing. Last payments may not be included.
               </p>
