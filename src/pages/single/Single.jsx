@@ -55,8 +55,8 @@ const Single = () => {
     p: 4,
     borderRadius: 3,
   };
+  const dbRef = ref(getDatabase())
   useEffect(() => {
-    const dbRef = ref(getDatabase())
 
 
     get(child(dbRef, `users/${userData.uid}`)).then((snapshot) => {

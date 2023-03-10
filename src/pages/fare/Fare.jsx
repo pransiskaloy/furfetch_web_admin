@@ -9,8 +9,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import FormControl from '@mui/material/FormControl'
 
-export default function Fare() {
+const Fare = () =>{
   const [data, setData] = useState([]);
   const fareRef = ref(db,'BaseFare');
 
@@ -19,9 +20,11 @@ export default function Fare() {
   },[])
 
   const baseFare = (fareRefProp) =>  {
+    setData([])
     onValue(fareRefProp,(snapshot) =>{
       const dataCheck = snapshot.val();
       setData(dataCheck);
+      console.log(data)
       console.log(dataCheck)
     })
   }
@@ -45,38 +48,40 @@ export default function Fare() {
                 noValidate
                 autoComplete="off"
               >
-                <div>
-                  <TextField
-                  required
-                  label="Booking Fee"
-                  defaultValue={data.BookingFee}
-                  id="outlined-read-only-input"
-                  />
-                </div>
-                <div>
-                  <TextField
-                  required
-                  label="Per Km"
-                  defaultValue={data.PerKm}
-                  id="outlined-read-only-input"
-                  />
-                </div>
-                <div>
-                  <TextField
-                  required
-                  label="Per Minute"
-                  defaultValue={data.PerMin}
-                  id="outlined-read-only-input"
-                  />
-                </div>
-                <div>
-                  <TextField
-                  required
-                  label="Time Frame"
-                  defaultValue={data.TimeFrame}
-                  id="outlined-read-only-input"
-                  />
-                </div>
+                <FormControl>
+                  <div>
+                    <TextField
+                    required
+                    label="Booking Fee"
+                    value={data.BookingFee}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                    required
+                    label="Per Km"
+                    value={data.PerKm}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                    required
+                    label="Per Minute"
+                    value={data.PerMin}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                    required
+                    label="Time Frame"
+                    value={data.TimeFrame}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                </FormControl>
               </Box>
             </div>
             <div style={{marginLeft:20}}>
@@ -89,30 +94,32 @@ export default function Fare() {
                 noValidate
                 autoComplete="off"
               >
-                <div>
-                  <TextField
-                  required
-                  label="Furfetch X"
-                  defaultValue={data['Furfetch-x']}
-                  id="outlined-read-only-input"
-                  />
-                </div>
-                <div>
-                  <TextField
-                  required
-                  label="Furfetch Go"
-                  defaultValue={data['Furfetch-go']}
-                  id="outlined-read-only-input"
-                  />
-                </div>
-                <div>
-                  <TextField
-                  required
-                  label="Motorcycle"
-                  defaultValue={data.Motorcycle}
-                  id="outlined-read-only-input"
-                  />
-                </div>
+                <FormControl>
+                  <div>
+                    <TextField
+                    required
+                    label="Furfetch X"
+                    value={data['Furfetch-x']}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                    required
+                    label="Furfetch Go"
+                    value={data['Furfetch-go']}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                    required
+                    label="Motorcycle"
+                    value={data.Motorcycle}
+                    id="outlined-read-only-input"
+                    />
+                  </div>
+                </FormControl>
               </Box>
               <Stack direction="row" spacing={2}>
                 <Button variant="contained" color="info">
@@ -129,3 +136,5 @@ export default function Fare() {
       </div>
       )
 }
+
+export default Fare;

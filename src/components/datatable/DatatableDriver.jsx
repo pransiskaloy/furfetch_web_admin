@@ -67,6 +67,10 @@ const DatatableDriver = () => {
       setLowRate(counterRate)
       setNewDriver(counterDriver)
       setCountDriverDeactivated(counterDriverDeactivated)
+      data = JSON.parse(JSON.stringify(data).split('"id":').join('"driverId":'));
+      
+      document.write(JSON.stringify(data));
+      console.log(data)
     }
     );
   }
@@ -155,12 +159,6 @@ const DatatableDriver = () => {
             <Link to="/drivers/profile" state={{ driverData :params.row }} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
-            {/* <div
-              className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
-            >
-              Delete
-            </div> */}
           </div>
         );
       },
@@ -171,9 +169,6 @@ const DatatableDriver = () => {
   return (
     <div className="datatable">
         Drivers List
-        {/* <Link to="/users/new" className="link">
-          Add New
-        </Link> */}
       <div className="datatableTitle">
         <div className="widgets">
           {/* TOTAL DRIVERS */}
