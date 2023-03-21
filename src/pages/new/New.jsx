@@ -81,16 +81,61 @@ const New = ({ inputs, title }) => {
             </span>
           </Breadcrumbs>
         </div>
-        <div className="newBody">
-          <div className="newLeft">
-            <img
-                src={
-                  file
-                    ? URL.createObjectURL(file)
-                    : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                }
-                alt=""
-              />
+        <div className="top">
+          <div className="left">
+            
+              <div className="rightForm">
+                <img
+                  src={
+                    file
+                      ? URL.createObjectURL(file)
+                      : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                  }
+                  alt=""
+                />
+                <form onSubmit={register}> 
+                  <div className="formInput">
+                    <label htmlFor="file">
+                      Image: <DriveFolderUploadOutlinedIcon className="icon" />
+                    </label>
+                    <input
+                      type="file"
+                      id="file"
+                      onChange={(e) => setFile(e.target.files[0])}
+                      style={{ display: "none" }}
+                    />
+                  </div>
+                  <TextField id="outlined-basic" placeholder="example@gmail.com" label="Email" variant="outlined" onChange={e=>setEmail(e.target.value)}/>
+                  <div className="formInput">
+                    <label>Password</label>
+                    <input type="password" placeholder="********" onChange={e=>setPassword(e.target.value)}/>
+                  </div>
+                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          size="small"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
+                <button type="submit">
+                  Register
+                </button>
+              </form>
+            </div>
           </div>
           <div className="newRight"></div>
         </div>
@@ -98,60 +143,7 @@ const New = ({ inputs, title }) => {
           <div className="left">
             
           </div>
-          <div className="right">
-            <form onSubmit={register}> 
-              <div className="formInput">
-                <label htmlFor="file">
-                  Image: <DriveFolderUploadOutlinedIcon className="icon" />
-                </label>
-                <input
-                  type="file"
-                  id="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  style={{ display: "none" }}
-                />
-              </div>
-
-              {/* {inputs.map((input) => (
-                <div className="formInput" key={input.id}>
-                  <label>{input.label}</label>
-                  <input type={input.type} placeholder={input.placeholder} />
-                </div>
-              ))} */}
-              <TextField id="outlined-basic" placeholder="example@gmail.com" label="Email" variant="outlined" onChange={e=>setEmail(e.target.value)}/>
-              <div className="formInput">
-                <label>Password</label>
-                <input type="password" placeholder="********" onChange={e=>setPassword(e.target.value)}/>
-              </div>
-
-               
-
-              <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  type={showPassword ? 'text' : 'password'}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        size="small"
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-              </FormControl>
-              <button type="submit">
-                Register
-              </button>
-            </form>
-          </div>
+          
         </div>
       </div>
     </div>
