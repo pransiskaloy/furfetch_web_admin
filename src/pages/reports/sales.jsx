@@ -9,8 +9,18 @@ import Button from '@mui/material/Button';
 import {db,} from "../../services/firebase.js"
 import { getDatabase, ref, get, child ,onValue} from "firebase/database";
 import { DownloadTableExcel } from 'react-export-table-to-excel';
+import moment from 'moment';
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const Sales = () => {
+    const [emptyData, setEmptyData] = useState(false);
     const tableRef = useRef(null);
     const [earnings,setEarnings] = useState([])
     const [totalEarnings,setTotalEarnings] = useState(0)
@@ -45,7 +55,7 @@ const Sales = () => {
                 Object.values(dataCheck).map((dat) => {
                     if(dat.end_trip){
                         // console.log(dat)
-
+                        
 
                         trip.push(dat)
                         // trip.push(dat.end_trip)
@@ -60,23 +70,27 @@ const Sales = () => {
                                 if(startDate === endTripTime){
                                     total = total + earn.end_trip.fare_amount;
                                     setEarnings((oldArray) =>[...oldArray,earn])
+                                    setEmptyData(false)
                                 }
                             }else{
                                 if( startDate <= endTripTime && endDate >= endTripTime){
                                     total = total + earn.end_trip.fare_amount;
                                     setEarnings((oldArray) =>[...oldArray,earn])
+                                    setEmptyData(false)
                                 }
                             }
                         })
                         trip.pop()
+                    }else{
+                        setEmptyData(true)
                     }
                 });
                 setTotalEarnings(total)
             }
             // console.log("earnings-------------------")
-            console.log(earnings)
+            // console.log(earnings)
             // console.log("total earnings-------------------")
-            console.log(totalEarnings)
+            // console.log(totalEarnings)
         })
     }
     return (
@@ -84,6 +98,9 @@ const Sales = () => {
             <Sidebar />
             <div className="reportContainer">
                 <Navbar />
+                <div className="reportTitle">
+                    <h3>List of Fare</h3>
+                </div>
                 <div className="top">
                     <div className="left">
                         <DateRangePicker
@@ -93,38 +110,81 @@ const Sales = () => {
                             ranges={state}
                         />
                         <br /><br />
-                        <Button variant="outlined" color="success" onClick={()=>{searchData(state)}}>View Report</Button>
+                        <Button variant="outlined" color="success" onClick={()=>{searchData(state)}}>View Sales Report</Button>
                     </div>
-                    <div className="right">
+                </div>
+                <div className="bottom">
+                    {totalEarnings === 0 ? 
+                        <Button variant="outlined" color="success" disabled >Export excel</Button>
+                        :
                         <DownloadTableExcel
-                        filename="users table"
-                        sheet="users"
+                        filename="sales table"
+                        sheet="sales"
                         currentTableRef={tableRef.current}
                         >
-
-                            <button> Export excel </button>
-
-                        </DownloadTableExcel>
-                        <table ref={tableRef}>
-                            <tbody>
-                                <tr>
-                                    <th>Transaction ID</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
-                                </tr>
-                                <tr>
-                                    <td>Edison</td>
-                                    <td>Padilla</td>
-                                    <td>20</td>
-                                </tr>
-                                <tr>
-                                    <td>Alberto</td>
-                                    <td>Lopez</td>
-                                    <td>94</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        
+                        <Button variant="outlined" color="success" >Export excel</Button>
+                    </DownloadTableExcel> 
+                    }
+                    <br /> <br />
+                    
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table" ref={tableRef}>
+                        <TableHead>
+                            <TableRow>
+                            <TableCell><strong>Transaction ID</strong></TableCell>
+                            <TableCell align="center"><strong>Date</strong></TableCell>
+                            <TableCell align="center"><strong>Amount</strong></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                totalEarnings === 0 ? 
+                                <>
+                                    <TableRow
+                                    key={"total"}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell colSpan={3} align="center">
+                                        <i><strong>No Data Found</strong></i>
+                                        </TableCell>
+                                    </TableRow>
+                                </> :
+                                earnings.map((earn) => (
+                                    <TableRow
+                                        key={earn.uid}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row" >
+                                        {earn.uid}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {moment(earn.end_trip.end_trip_time).format("MM/DD/YYYY")}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                        {parseFloat(earn.end_trip.fare_amount).toFixed(2)}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            }
+                            {
+                                totalEarnings === 0 ? <></> :
+                                    <TableRow
+                                    key={"total"}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                    <TableCell align="right">
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <strong>TOTAL</strong>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                    <strong>{totalEarnings}</strong>
+                                    </TableCell>
+                                </TableRow>
+                            }
+                            
+                        </TableBody>
+                        </Table>
+                    </TableContainer>
                 </div>
             </div>
         </div>
