@@ -114,11 +114,13 @@ const Sidebar = () => {
           </li> */}
           
           <p className="title">REPORTS</p>
-          <li>
-            <AssessmentIcon className="icon" />
-            <span>Sales</span>
-          </li>
-          <li>
+          <Link to="/sales" style={{ textDecoration: "none" }}>
+            <li>
+              <AssessmentIcon className="icon" />
+              <span>Sales</span>
+            </li>
+          </Link>
+          {/* <li>
             <ContactPageIcon className="icon" />
             <span>App Users</span>
           </li>
@@ -129,7 +131,7 @@ const Sidebar = () => {
           <li>
             <AnnouncementIcon className="icon" />
             <span>Complaints</span>
-          </li>
+          </li> */}
           <p className="title">SETTINGS</p>
           <Link to="/fare" style={{ textDecoration: "none" }}>
             <li>

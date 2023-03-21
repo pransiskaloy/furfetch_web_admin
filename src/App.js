@@ -20,6 +20,7 @@ import SingleTripUser from "./pages/single/SingleTripUser";
 import SingleTripDriver from "./pages/single/SingleTripDriver";
 import {db} from "./services/firebase.js"
 import Fare from "./pages/fare/Fare";
+import Sales from "./pages/reports/sales";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -70,6 +71,9 @@ function App() {
               </Route>
               <Route path="/fare">
                 <Route index element={<Fare />} />
+              </Route>
+              <Route path="/sales">
+                <Route index element={<Sales />} />
               </Route>
               <Route path="/drivers">
                 <Route index element={<ListDriver />} />
