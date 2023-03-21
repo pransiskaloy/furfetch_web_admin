@@ -183,9 +183,8 @@ const Fare = () =>{
                 </Table>
               </TableContainer>
             </div>
-            <div className="updateBox" style={{marginLeft:150,width:"40%"}}>
+            <div className="updateBox" style={{marginLeft:50,width:"40%"}}>
               <p style={{fontSize:20}}><strong>Update Fee</strong></p>
-              {/* <form onSubmit={handleSubmit}> */}
                 <Box
                   sx={{
                     '& .MuiTextField-root': { m: 1, width: '25ch' },
