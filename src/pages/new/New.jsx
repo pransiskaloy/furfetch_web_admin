@@ -2,7 +2,7 @@ import "./new.scss";
 import * as React from 'react';
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { useState } from "react";
 import {auth} from '../../services/firebase'
 import {createUserWithEmailAndPassword} from 'firebase/auth'
@@ -16,6 +16,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Button from '@mui/material/Button';
+import {db,} from "../../services/firebase.js"
 
 
 const New = ({ inputs, title }) => {
@@ -30,21 +32,26 @@ const New = ({ inputs, title }) => {
 
   const [file, setFile] = useState("");
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  const handleMouseDownConfirmPassword = (event) => {
     event.preventDefault();
   };
   
   const validatePassword = () => {
     let isValid = true
-    if (password === ''){
-    // if (password !== '' && confirmPassword !== ''){
-      // if (password !== confirmPassword) {
+    // if (password === ''){
+    if (password !== '' && confirmPassword !== ''){
+      if (password !== confirmPassword) {
         isValid = false
         setError('Passwords does not match')
-      // }
+      }
     }
     return isValid
   }
@@ -59,8 +66,15 @@ const New = ({ inputs, title }) => {
         .then((res) => {
             console.log("ehh")
             console.log(res.user)
-            // const db = getDatabase();
-            // set(ref(db, `staff/${driverData.id}/status`), e.target.value);
+
+            // set(ref(db, `Staff/`), Number(amount)).then(() => {
+            //   setSuccess(true);
+            //   // Data saved successfully!
+            // })
+            // .catch((error) => {
+            //   // setFailed(true);
+            //   // The write failed...
+            // });
           })
         .catch(err => setError(err.message))
     }
@@ -83,38 +97,41 @@ const New = ({ inputs, title }) => {
         </div>
         <div className="top">
           <div className="left">
-            
-              <div className="rightForm">
-                <img
-                  src={
-                    file
-                      ? URL.createObjectURL(file)
-                      : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
-                  }
-                  alt=""
-                />
-                <form onSubmit={register}> 
-                  <div className="formInput">
-                    <label htmlFor="file">
-                      Image: <DriveFolderUploadOutlinedIcon className="icon" />
-                    </label>
-                    <input
-                      type="file"
-                      id="file"
-                      onChange={(e) => setFile(e.target.files[0])}
-                      style={{ display: "none" }}
-                    />
-                  </div>
-                  <TextField id="outlined-basic" placeholder="example@gmail.com" label="Email" variant="outlined" onChange={e=>setEmail(e.target.value)}/>
-                  <div className="formInput">
-                    <label>Password</label>
-                    <input type="password" placeholder="********" onChange={e=>setPassword(e.target.value)}/>
-                  </div>
-                <FormControl sx={{ m: 1, width: '30ch' }} variant="outlined">
+            <img
+              src={
+                file
+                  ? URL.createObjectURL(file)
+                  : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+              }
+              alt=""
+            />
+            <br />
+            <label htmlFor="upload-photo">
+              <input
+                style={{ display: 'none' }}
+                id="upload-photo"
+                name="upload-photo"
+                type="file"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+
+                <Button variant="contained" color="primary" component="span">
+                  <AddPhotoAlternateIcon className="icon" /> &nbsp; Upload
+                </Button>
+              <br /><br />
+            </label>
+
+                <TextField sx={{width: "27ch",margin:1}} id="outlined-basic" placeholder="Juan Dela Cruz" label="Full Name" type="text" variant="outlined" onChange={e=>setFullName(e.target.value)}/> <br />
+                <TextField sx={{width: "27ch",margin:1}} id="outlined-basic" placeholder="Davao City" label="Address" type="address" variant="outlined" onChange={e=>setAddress(e.target.value)}/><br />
+                <TextField sx={{width: "27ch",margin:1}} id="outlined-basic" placeholder="09** *** ****" label="Phone" type="phone" variant="outlined" onChange={e=>setPhone(e.target.value)}/><br />
+                <TextField sx={{width: "27ch",margin:1}} id="outlined-basic" placeholder="example@gmail.com" type="email" label="Email" variant="outlined" onChange={e=>setEmail(e.target.value)}/>
+              <br />
+                <FormControl sx={{ m: 1 }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type={showPassword ? 'text' : 'password'}
+                    onChange={e=>setPassword(e.target.value)}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -130,12 +147,32 @@ const New = ({ inputs, title }) => {
                     }
                     label="Password"
                   />
-                </FormControl>
-                <button type="submit">
-                  Register
-                </button>
-              </form>
-            </div>
+                </FormControl> <br />
+                <FormControl sx={{ m: 1 }} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-password"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    onChange={e=>setConfirmPassword(e.target.value)}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          size="small"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowConfirmPassword}
+                          onMouseDown={handleMouseDownConfirmPassword}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Confirm Password"
+                  />
+                </FormControl> <br />
+            <Button sx={{ m: .5 }} variant="contained" color="success" >
+              Register
+            </Button>
           </div>
           <div className="newRight"></div>
         </div>

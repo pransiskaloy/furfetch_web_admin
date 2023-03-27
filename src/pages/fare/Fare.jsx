@@ -50,20 +50,30 @@ const Fare = () =>{
   const [rows, setRows] = useState([]);
   const fareRef = ref(db,'BaseFare');
   const [toggleUpdate,setToggleUpdate] = useState(false);
+  const [toggleAdd,setToggleAdd] = useState(false);
   const [type,setType] = useState("Fee")
-  const [amount,setAmount] = useState(0)
+  const [amount,setAmount] = useState()
+  const [addAmount,setAddAmount] = useState()
+  const [addFee,setAddFee] = useState("")
   const [success, setSuccess] = useState(false)
+  const [addSuccess, setAddSuccess] = useState(false)
   const [failed, setFailed] = useState(false)
+  const [addFailed, setAddFailed] = useState(false)
 
 
   const vertical = "top"
   const horizontal = "right"
 
   const [open, setOpen] = React.useState(false);
+  const [addOpen, setAddOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
+  const handleAddOpen = () => setAddOpen(true);
   const handleClose = () => {
     setOpen(false)
+    setAddOpen(false)
     setSuccess(false)
+    setAddSuccess(false)
+    setAddFailed(false)
     setFailed(false)
   };
 
@@ -73,23 +83,34 @@ const Fare = () =>{
   },[])
 
   const baseFare = (fareRefProp) =>  {
+    let arr = []
     onValue(fareRefProp,(snapshot) =>{
       const dataCheck = snapshot.val();
-      setRows([
-        createData("Booking Fee","BookingFee",dataCheck.BookingFee),
-        createData("Per Km","PerKm",dataCheck.PerKm),
-        createData("Per Minute","PerMin",dataCheck.PerMin),
-        createData("Time Frame","TimeFrame",dataCheck.TimeFrame),
-        createData("Motorcycle","Motorcycle",dataCheck.Motorcycle),
-        createData("Furfetch Go","Furfetch-go",dataCheck["Furfetch-go"]),
-        createData("Furfetch X","Furfetch-x",dataCheck["Furfetch-x"]),
-      ])
+      Object.entries(dataCheck).forEach(([value,key])=>{
+        arr.push(createData(value,"BookingFee",key))
+      })
+      setRows(arr)
+      // setRows([
+      //   createData("Booking Fee","BookingFee",dataCheck.BookingFee),
+      //   createData("Per Km","PerKm",dataCheck.PerKm),
+      //   createData("Per Minute","PerMin",dataCheck.PerMin),
+      //   createData("Time Frame","TimeFrame",dataCheck.TimeFrame),
+      //   createData("Motorcycle","Motorcycle",dataCheck.Motorcycle),
+      //   createData("Furfetch Go","Furfetch-go",dataCheck["Furfetch-go"]),
+      //   createData("Furfetch X","Furfetch-x",dataCheck["Furfetch-x"]),
+      // ])
     })
+    arr.pop()
   }
 
   
   const toggleUpdateBtn = () =>{
     setToggleUpdate(true)
+  }
+
+  const toggleAddBtnCancel = () =>{
+    setAddAmount()
+    setAddFee()
   }
   const toggleUpdateBtnCancel = () =>{
     setToggleUpdate(false)
@@ -121,6 +142,20 @@ const Fare = () =>{
     toggleUpdateBtnCancel();
     // e.preventDefault()
   };
+  const handleAddSubmit = () => {
+    set(ref(db, `BaseFare/${addFee}`), Number(addAmount)).then(() => {
+      setAddSuccess(true);
+      // Data saved successfully!
+    })
+    .catch((error) => {
+      setAddFailed(true);
+      // The write failed...
+    });
+    handleClose();
+
+    toggleUpdateBtnCancel();
+    // e.preventDefault()
+  };
   return (
       <div className="fare">
         <Snackbar
@@ -128,7 +163,7 @@ const Fare = () =>{
         anchorOrigin={{ vertical, horizontal }}
         open={success}
         onClose={handleClose}
-        message="I love snacks"
+        message="It went perfectly fine!"
         key={"Success"}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
@@ -140,7 +175,27 @@ const Fare = () =>{
         anchorOrigin={{ vertical, horizontal }}
         open={failed}
         onClose={handleClose}
-        message="I love snacks"
+        message="Something went wrong!"
+        key={"Error"}
+      />
+        <Snackbar
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical, horizontal }}
+        open={addSuccess}
+        onClose={handleClose}
+        message="It went perfectly fine!"
+        key={"Success"}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Fare successfully added!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical, horizontal }}
+        open={addFailed}
+        onClose={handleClose}
+        message="Something went wrong!"
         key={"Error"}
       />
         <Sidebar />
@@ -183,76 +238,161 @@ const Fare = () =>{
                 </Table>
               </TableContainer>
             </div>
-            <div className="updateBox" style={{marginLeft:50,width:"40%"}}>
-              <p style={{fontSize:20}}><strong>Update Fee</strong></p>
+            <div className="update" style={{marginLeft:50,width:"40%"}}>
+              <div className="addBox">
+                <p style={{fontSize:20}}><strong>Add Fee</strong></p>
                 <Box
-                  sx={{
-                    '& .MuiTextField-root': { m: 1, width: '25ch' },
-                  }}
-                  noValidate
-                  autoComplete="off"
-                >
-                  <Stack direction="row" justifyContent="space-between">
-                    <div style={{fontSize:25,paddingTop:15}}><p>{type}</p></div>
-                        <Input
-                        inputProps={{min: 0, style: { textAlign: 'right' }}} 
-                        required
-                        type="number"
-                        value={parseFloat(amount).toFixed(2) ?? ''}
-                        id="outlined-read-only-input"
-                        placeholder="0.00"
-                        onChange={(e)=>setAmount(e.target.value)}
-                        />
-                  </Stack>
-                        <br />
-                  <Stack direction="row" spacing={2} justifyContent="flex-end">
-                    {toggleUpdate ?
-                  <> 
-                    <Button variant="contained" color="success" onClick={handleOpen}>
-                      Save
-                    </Button>
-                    <Button variant="outlined" color="error" onClick={() => {toggleUpdateBtnCancel()}}>
-                      Cancel
-                    </Button>
-                  </> : <>
-                  <Button variant="contained" disabled color="success" onClick={handleOpen}>
-                      Save
-                    </Button>
-                  <Button variant="outlined" disabled color="error" onClick={() => {toggleUpdateBtnCancel()}}>
-                      Cancel
-                    </Button>
-                  </>
-                  }
-                  </Stack>
-                </Box>
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                      Update Confirmation
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      Are you sure to update {type} amount?
-                    </Typography> <br /> <br />
+                    sx={{
+                      '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <Stack direction="row" justifyContent="space-between">
+                      <div style={{fontSize:25,paddingTop:15}}><p>Fee</p></div>
+                          <Input
+                          inputProps={{ style: { textAlign: 'right' }}} 
+                          required
+                          type="text"
+                          value={addFee ?? ''}
+                          id="outlined-read-only-input"
+                          placeholder="Type of Fee"
+                          onChange={(e)=>setAddFee(e.target.value)}
+                          />
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between">
+                      <div style={{fontSize:25,paddingTop:15}}><p>Amount</p></div>
+                          <Input
+                          inputProps={{min: 0, style: { textAlign: 'right' }}} 
+                          required
+                          type="number"
+                          value={parseFloat(addAmount).toFixed(2) ?? ''}
+                          id="outlined-read-only-input"
+                          placeholder="0.00"
+                          onChange={(e)=>setAddAmount(e.target.value)}
+                          />
+                    </Stack>
+                          <br />
                     <Stack direction="row" spacing={2} justifyContent="flex-end">
-
-                      <> 
-                        <Button variant="contained" onClick={()=>handleSubmit()} color="success">
-                          Save
-                        </Button>
-                        <Button variant="outlined" color="error" onClick={() => {toggleUpdateBtnCancel()}}>
-                          Cancel
-                        </Button>
-                      </>
-
+                      {addFee && addAmount ?
+                    <> 
+                      <Button variant="contained" color="success" onClick={handleAddOpen}>
+                        Save
+                      </Button>
+                      <Button variant="outlined" color="error" onClick={() => {toggleAddBtnCancel()}}>
+                        Cancel
+                      </Button>
+                    </> : <>
+                    <Button variant="contained" disabled color="success" onClick={handleAddOpen}>
+                        Save
+                      </Button>
+                    <Button variant="outlined" color="error" onClick={() => {toggleAddBtnCancel()}}>
+                        Cancel
+                      </Button>
+                    </>
+                    }
                     </Stack>
                   </Box>
-                </Modal>
-              {/* </form> */}
+                  <Modal
+                    open={addOpen}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Add Confirmation
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Are you sure to add {addFee} amount?
+                      </Typography> <br /> <br />
+                      <Stack direction="row" spacing={2} justifyContent="flex-end">
+
+                        <> 
+                          <Button variant="contained" onClick={()=>handleAddSubmit()} color="success">
+                            Save
+                          </Button>
+                          <Button variant="outlined" color="error" onClick={() => {toggleUpdateBtnCancel()}}>
+                            Cancel
+                          </Button>
+                        </>
+
+                      </Stack>
+                    </Box>
+                  </Modal>
+              </div>
+              
+              <div className="updateBox">
+                <p style={{fontSize:20}}><strong>Update Fee</strong></p>
+                  <Box
+                    sx={{
+                      '& .MuiTextField-root': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <Stack direction="row" justifyContent="space-between">
+                      <div style={{fontSize:25,paddingTop:15}}><p>{type}</p></div>
+                          <Input
+                          inputProps={{min: 0, style: { textAlign: 'right' }}} 
+                          required
+                          type="number"
+                          value={parseFloat(amount).toFixed(2) ?? ''}
+                          id="outlined-read-only-input"
+                          placeholder="0.00"
+                          onChange={(e)=>setAmount(e.target.value)}
+                          />
+                    </Stack>
+                          <br />
+                    <Stack direction="row" spacing={2} justifyContent="flex-end">
+                      {toggleUpdate ?
+                    <> 
+                      <Button variant="contained" color="success" onClick={handleOpen}>
+                        Update
+                      </Button>
+                      <Button variant="outlined" color="error" onClick={() => {toggleUpdateBtnCancel()}}>
+                        Cancel
+                      </Button>
+                    </> : <>
+                    <Button variant="contained" disabled color="success" onClick={handleOpen}>
+                        Update
+                      </Button>
+                    <Button variant="outlined" disabled color="error" onClick={() => {toggleUpdateBtnCancel()}}>
+                        Cancel
+                      </Button>
+                    </>
+                    }
+                    </Stack>
+                  </Box>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Update Confirmation
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Are you sure to update {type} amount?
+                      </Typography> <br /> <br />
+                      <Stack direction="row" spacing={2} justifyContent="flex-end">
+
+                        <> 
+                          <Button variant="contained" onClick={()=>handleSubmit()} color="success">
+                            Update
+                          </Button>
+                          <Button variant="outlined" color="error" onClick={() => {toggleUpdateBtnCancel()}}>
+                            Cancel
+                          </Button>
+                        </>
+
+                      </Stack>
+                    </Box>
+                  </Modal>
+              </div>
+              
        
             </div>
 
