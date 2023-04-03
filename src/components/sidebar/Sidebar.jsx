@@ -54,7 +54,7 @@ const Sidebar = () => {
               <span>Earnings</span>
             </li>
           </Link>
-          <p className="title">PROFILE</p>
+          {/* <p className="title">PROFILE</p>
           <Link to="/profile"  style={{ textDecoration: "none" }}>
             <li>
               <AccountCircleOutlinedIcon className="icon" />
@@ -66,7 +66,7 @@ const Sidebar = () => {
               <SupervisorAccountIcon className="icon" />
               <span>Staff</span>
             </li>
-          </Link>
+          </Link> */}
           <p className="title">LISTS</p>
           <Link to="/users" style={{ textDecoration: "none" }}>
             <li>
@@ -139,12 +139,13 @@ const Sidebar = () => {
               <span>Fare</span>
             </li>
           </Link>
-          <Link to="/trips" style={{ textDecoration: "none" }}>
+          {/* <Link to="/trips" style={{ textDecoration: "none" }}>
             <li>
               <SubscriptionsIcon className="icon" />
               <span>Subscription</span>
             </li>
-          </Link><br /> <hr /> <br />
+          </Link> */}
+          <br /> <hr /> <br />
           <Link to="/" style={{ textDecoration: "none" }}>
             <li onClick={logOut}>
               <ExitToAppIcon className="icon" />
