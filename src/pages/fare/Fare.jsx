@@ -72,9 +72,9 @@ const Fare = () =>{
     setOpen(false)
     setAddOpen(false)
     setSuccess(false)
+    setFailed(false)
     setAddSuccess(false)
     setAddFailed(false)
-    setFailed(false)
   };
 
 
@@ -164,7 +164,7 @@ const Fare = () =>{
         open={success}
         onClose={handleClose}
         message="It went perfectly fine!"
-        key={"Success"}
+        key={"Success-Added"}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           Fare successfully updated!
@@ -176,7 +176,7 @@ const Fare = () =>{
         open={failed}
         onClose={handleClose}
         message="Something went wrong!"
-        key={"Error"}
+        key={"Error-Added"}
       />
         <Snackbar
         autoHideDuration={6000}
