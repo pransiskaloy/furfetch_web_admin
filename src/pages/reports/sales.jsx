@@ -129,7 +129,7 @@ const Sales = () => {
                     <br /> <br />
                     
                     <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" ref={tableRef}>
+                        <Table sx={{ minWidth: 500 }} aria-label="simple table" ref={tableRef}>
                         <TableHead>
                             <TableRow>
                             <TableCell><strong>Transaction ID</strong></TableCell>
