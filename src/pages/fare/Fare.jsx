@@ -87,7 +87,8 @@ const Fare = () =>{
     onValue(fareRefProp,(snapshot) =>{
       const dataCheck = snapshot.val();
       Object.entries(dataCheck).forEach(([value,key])=>{
-        arr.push(createData(value,"BookingFee",key))
+        arr.push(createData(value,value,key))
+        console.log(value)
       })
       setRows(arr)
       // setRows([
