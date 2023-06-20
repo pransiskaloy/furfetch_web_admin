@@ -36,7 +36,7 @@ const Login = () => {
         <button type="submit">Login</button>
         {error && <span>Wrong Email or Password</span>}
         <br /><br />
-        <span className="copyright"> © Copyright. All Rights Reserve 2022</span>
+        <span className="copyright"> © Copyright. All Rights Reserve 2023</span>
       </form>
     </div>
   )
